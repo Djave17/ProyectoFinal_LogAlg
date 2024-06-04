@@ -6,8 +6,8 @@
       "type": "lldb",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/davidsanchez/ProyectoFinalLogyAlg",
-      "program": "/Users/davidsanchez/ProyectoFinalLogyAlg/build/Debug/outDebug"
+      "cwd": "/Users/davidsanchez/ProyectoFinalLogyAlg/Principal ",
+      "program": "/Users/davidsanchez/ProyectoFinalLogyAlg/Principal /build/Debug/outDebug"
     }
   ]
 }
