@@ -3,11 +3,13 @@
   "configurations": [
     {
       "name": "C/C++ Runner: Debug Session",
-      "type": "lldb",
+      "type": "cppvsdbg",
       "request": "launch",
       "args": [],
-      "cwd": "/Users/davidsanchez/ProyectoFinalLogyAlg/Principal ",
-      "program": "/Users/davidsanchez/ProyectoFinalLogyAlg/Principal /build/Debug/outDebug"
+      "stopAtEntry": false,
+      "console": "externalTerminal",
+      "cwd": "d:/Documentos/Logica y Algoritmo/ProyectoFinal_LogAlg/ProyectoFinal_LogAlg/Prueba",
+      "program": "d:/Documentos/Logica y Algoritmo/ProyectoFinal_LogAlg/ProyectoFinal_LogAlg/Prueba/build/Debug/outDebug"
     }
   ]
 }

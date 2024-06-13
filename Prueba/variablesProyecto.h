@@ -9,6 +9,7 @@ using namespace std;
 
 struct Partido{
     string namepartido;
+    string date; 
     int gamesPlayed;
     int pts[MAX_PARTIDOS];
     int ptsAgainst[MAX_PARTIDOS];
