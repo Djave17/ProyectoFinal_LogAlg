@@ -11,7 +11,7 @@ void agregarPartido(Partido *partido, int &numPartidos);
 void promedios(Partido *partido, Promedios promedio, int numPartidos);
 void mostrarPromedios(Promedios promedio, int numPartidos);
 void mostrarPartidos(Partido partido, int numPartidos);
-void mostrarPartido(Partido partido, int numPartidos);
+
 
 void menuPrincipal(){
     int op; 
@@ -27,6 +27,7 @@ void menuPrincipal(){
         cout << "4. Editar estadisticas" << endl;
         cout << "5. Eliminar estadisticas" << endl;
         cout << "5. Salir" << endl;
+        cout << "Elija una opcion: ";
         cin >> op;
 
         switch (op)
@@ -65,13 +66,13 @@ void agregarPartido(Partido *partido, int &numPartidos){
     int op2;
     int contador = 0;
     
-    cout<<"Cantidad de partidos a agregar: ";
-    cin >> numPartidos;
-    for (int i = 0; i < numPartidos; i++)
+    
+    
+    do
     {
-        cout << "Partido #" << i + 1 << endl;
-        do
-        {
+        cout << "Introduzca el nombre del equipo enfrentado: ";
+        cin >> partido[numPartidos].namepartido; 
+        
         cout << "1. Puntos" << endl;
         cout << "2. Puntos en contra" << endl;
         cout << "3. Sets ganados" << endl;
@@ -83,109 +84,112 @@ void agregarPartido(Partido *partido, int &numPartidos){
         cout << "9. Bloqueos" << endl;
         cout << "10. Faltas" << endl;
         cout << "11. Salir" << endl;
+        cout << "Elija una opcion: ";
         cin>>op2; 
         switch (op2)
         {
-        case 1:
-            for (contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los puntos del partido: ";
-                cin >> partido[contador].pts[numPartidos];
-            }
-              
-              
-
-            break;
-        case 2:
-            for (contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los puntos en contra del partido: ";
-                cin >> partido[contador].ptsAgainst[numPartidos];
-            }
-            
-            break;
-        case 3:
-            for (contador = 0; contador < numPartidos; contador++)
-            {  
-                cout << "Ingrese los sets ganados del partido: ";
-                cin >> partido[contador].setsWon[numPartidos];
+            case 1:
+                for (contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los puntos del partido Jaguares vs : "<< partido[numPartidos]. namepartido << endl;
+                    cin >> partido[contador].pts[numPartidos];
+                }
                 
-            }
-            break;
+                
 
-        case 4:
-            for (contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los sets perdidos del partido: ";
-                cin >> partido[contador].setsLost[numPartidos];
-            }
-            break;
-        
-        case 5:
-            for (contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los aces del partido: ";
-                cin >> partido[contador].ace[numPartidos];
-            }
+                break;
+            case 2:
+                for (contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los puntos en contra del partido: ";
+                    cin >> partido[contador].ptsAgainst[numPartidos];
+                }
+                
+                break;
+            case 3:
+                for (contador = 0; contador < numPartidos; contador++)
+                {  
+                    cout << "Ingrese los sets ganados del partido: ";
+                    cin >> partido[contador].setsWon[numPartidos];
+                    
+                }
+                break;
 
-            break;
-        
-        case 6:
-            for(contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los errores del partido: ";
-                cin >> partido[contador].errors[numPartidos];
-            }
-            break;
-        
-        case 7:
-            for (contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese las recepciones exitosas del partido: ";
-                cin >> partido[contador].sucessfulRecep[numPartidos];
-            }
+            case 4:
+                for (contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los sets perdidos del partido: ";
+                    cin >> partido[contador].setsLost[numPartidos];
+                }
+                break;
+            
+            case 5:
+                for (contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los aces del partido: ";
+                    cin >> partido[contador].ace[numPartidos];
+                }
 
-            break;
-        
-        case 8:
-            for(contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los ataques exitosos del partido: ";
-                cin >> partido[contador].succesfulAtacks[numPartidos];
-            }
-            break;
-        
-        case 9:
-            for(contador = 0; contador < numPartidos; contador++)
-            {
-                cout << "Ingrese los bloqueos del partido: ";
-                cin >> partido[contador].blocks[numPartidos];
-            }
+                break;
+            
+            case 6:
+                for(contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los errores del partido: ";
+                    cin >> partido[contador].errors[numPartidos];
+                }
+                break;
+            
+            case 7:
+                for (contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese las recepciones exitosas del partido: ";
+                    cin >> partido[contador].sucessfulRecep[numPartidos];
+                }
 
-            break;
-        
-        case 10:
-            for(contador = 0; contador< numPartidos; contador++)
-            {
-                cout << "Ingrese las faltas del partido: ";
-                cin >> partido[contador].faults[numPartidos];
+                break;
+            
+            case 8:
+                for(contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los ataques exitosos del partido: ";
+                    cin >> partido[contador].succesfulAtacks[numPartidos];
+                }
+                break;
+            
+            case 9:
+                for(contador = 0; contador < numPartidos; contador++)
+                {
+                    cout << "Ingrese los bloqueos del partido: ";
+                    cin >> partido[contador].blocks[numPartidos];
+                }
+
+                break;
+            
+            case 10:
+                for(contador = 0; contador< numPartidos; contador++)
+                {
+                    cout << "Ingrese las faltas del partido: ";
+                    cin >> partido[contador].faults[numPartidos];
+                }
+                break;
+            
+            case 11:
+                cout << "Saliendo..." << endl;
+                return menuPrincipal();
+                break;
+            numPartidos++;
+            
+            default:
+                cout<<"Opcion no valida, vuelva a intentarlo..."<<endl; 
+                break;
             }
-            break;
         
-        case 11:
-            cout << "Saliendo..." << endl;
-            return menuPrincipal();
-            break;
+     } while (op2 != 12);
         
-        default:
-            break;
-        }
-        
-     } while (op2 != 11);
-        
-    }
-    
 }
+  
+
 void promedios(Partido *partido, Promedios promedio, int numPartidos){
    int suma;
    

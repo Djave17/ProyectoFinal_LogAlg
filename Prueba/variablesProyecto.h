@@ -8,6 +8,7 @@ using namespace std;
 #define MAX_PARTIDOS 100
 
 struct Partido{
+    string namepartido;
     int gamesPlayed;
     int pts[MAX_PARTIDOS];
     int ptsAgainst[MAX_PARTIDOS];
