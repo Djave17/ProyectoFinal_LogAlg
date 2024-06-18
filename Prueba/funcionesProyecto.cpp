@@ -1,20 +1,24 @@
 #include <iostream>
 #include <string>
-#include "VariablesProyecto.h"
+#include <stdlib.h>
+#include "variablesProyecto.h"
 
 using namespace std;
 
 void menuPrincipal();
 void subMenu();
-void agregarPartido1(Partido *partido, int &numPartidos);
+void agregarID(Partido *partido, int &numPartidos);
 void agregarPartido(Partido *partido, int &numPartidos);
 void editarEstadisticas(Partido *partido, int numPartidos);
 void promedios(Partido *partido, Promedios promedio, int numPartidos);
+void buscarPartido(Partido *partido, int numPartidos);
 void mostrarPromedios(Promedios promedio, int numPartidos);
 void mostrarPartidos(Partido partido, int numPartidos);
+void sda(Partido *partido, int &numPartidos);
 
 void menuPrincipal()
 {
+    system("cls");
     int op;
     Partido partido[MAX_PARTIDOS];
     Promedios promedio[MAX_PARTIDOS];
@@ -35,7 +39,8 @@ void menuPrincipal()
         {
         case 1:
             system("cls");
-            agregarPartido1(partido, numPartidos);
+            agregarPartido(partido, numPartidos);
+            fflush(stdin);
             system("pause");
 
             break;
@@ -48,6 +53,7 @@ void menuPrincipal()
             break;
 
         case 4:
+            sda(partido, numPartidos);
 
             break;
 
@@ -62,7 +68,7 @@ void menuPrincipal()
 }
 
 // sub menu de elecion de estadisticas a agreagar
-void agregarPartido1(Partido *partido, int &numPartidos)
+void agregarPartido(Partido *partido, int &numPartidos)
 {
     int opcion2;
     int contador = 0;
@@ -70,12 +76,13 @@ void agregarPartido1(Partido *partido, int &numPartidos)
     do
     {
         //NOMBRE DEL EQUIPO CONTRARIO
+        cout << "Partido agregado #" << numPartidos + 1 << endl;
         cout << "Introduzca el nombre del equipo enfrentado: ";
         cin >> partido[numPartidos].namepartido;
         fflush(stdin);
         //FECHA DEL PARTIDO
         cout << "Introduzca la fecha del partido: ";
-        cin >> partido[numPartidos].date;
+        cin >> partido[contador].date;
         cout << endl;
         fflush(stdin);
 
@@ -172,12 +179,38 @@ void agregarPartido1(Partido *partido, int &numPartidos)
 
 void promedios(Partido *partido, Promedios promedio, int numPartidos)
 {
-    int suma;
+    for (int i = 0; i < numPartidos; i++)
+    {
+        promedio.sumPts += partido[i].pts[i];
+        promedio.sumPtsAgainst += partido[i].ptsAgainst[i];
+        promedio.sumSetsWon += partido[i].setsWon[i];
+        promedio.sumSetsLost += partido[i].setsLost[i];
+        promedio.sumAce += partido[i].ace[i];
+        promedio.sumErrors += partido[i].errors[i];
+        promedio.sumSucessfulRecep += partido[i].sucessfulRecep[i];
+        promedio.sumSuccesfulAtacks += partido[i].succesfulAtacks[i];
+        promedio.sumBlocks += partido[i].blocks[i];
+        promedio.sumFaults += partido[i].faults[i];
+    }
+    for (int i = 0; i < numPartidos; i++)
+    {
+        promedio.promPts[i] = promedio.sumPts / numPartidos;
+        promedio.pptsAgainst[i] = promedio.sumPtsAgainst / numPartidos;
+        promedio.promSetsWon[i] = promedio.sumSetsWon / numPartidos;
+        promedio.promSetsLost[i] = promedio.sumSetsLost / numPartidos;
+        promedio.promAce[i] = promedio.sumAce / numPartidos;
+        promedio.promErrors[i] = promedio.sumErrors / numPartidos;
+        promedio.promSucessfulRecep[i] = promedio.sumSucessfulRecep / numPartidos;
+        promedio.promSuccesfulAtacks[i] = promedio.sumSuccesfulAtacks / numPartidos;
+        promedio.promBlocks[i] = promedio.sumBlocks / numPartidos;
+        promedio.promFaults[i] = promedio.sumFaults / numPartidos;
+    }
 }
 void mostrarPromedios(Promedios promedio, int numPartidos)
 {
-    for (int i = 0; i < numPartidos; i++)
+    for (int i = 0; i < 2; i++)
     {
+        cout << "Promedios del partido #" << i + 1 << endl;
         cout << "Promedio de puntos: " << promedio.promPts[i] << endl;
         cout << "Promedio de puntos en contra: " << promedio.pptsAgainst[i] << endl;
         cout << "Promedio de sets ganados: " << promedio.promSetsWon[i] << endl;
@@ -191,13 +224,14 @@ void mostrarPromedios(Promedios promedio, int numPartidos)
     }
 }
 
-void mostrarPartidos(Partido partido, int numPartidos)
+void mostrarPartidos(Partido partido, int numPartidos) /*Funcion para mostrar una tabla de estadisticas del partido*/
 {
     for (int i = 0; i < numPartidos; i++)
     {
-        cout << "Jaguares vs " << partido.namepartido << endl;
-        cout << "Partido: " << partido.namepartido << endl;
-        cout << "Puntos: " << partido.pts[i] << endl;
+        cout << "Partido #" << i + 1 << endl; 
+        cout << "Nombre del equipo enfrentado: " << partido.namepartido << endl;
+        cout << "Fecha del partido: " << partido.date[i] << endl;
+        cout << "Puntos anotados: " << partido.pts[i] << endl;
         cout << "Puntos en contra: " << partido.ptsAgainst[i] << endl;
         cout << "Sets ganados: " << partido.setsWon[i] << endl;
         cout << "Sets perdidos: " << partido.setsLost[i] << endl;
@@ -207,5 +241,29 @@ void mostrarPartidos(Partido partido, int numPartidos)
         cout << "Ataques exitosos: " << partido.succesfulAtacks[i] << endl;
         cout << "Bloqueos: " << partido.blocks[i] << endl;
         cout << "Faltas: " << partido.faults[i] << endl;
+        
     }
+}
+// NOMBRE DE PARTIDO
+void sda(Partido *partido, int &numPartidos)
+{
+    for(int i = 0; i < 4; i++)
+    {
+        cout << "Partido #" << i + 1 << endl;
+        cout << "Nombre del equipo enfrentado: ";
+        getline(cin, partido[i].namepartido);
+        cout << "\nFecha: ";
+        getline(cin, partido[i].date);
+        cout << "\nIntroduzca el nombre del equipo enfrentado: ";
+        
+        fflush(stdin);
+    }
+//Mostrar nombres y fechas 
+    for(int i = 0; i < 4; i++)
+    {
+        cout << "Partido #" << i + 1 << endl;
+        cout << "Nombre del equipo enfrentado: " << partido[i].namepartido << endl;
+        cout << "Fecha: " << partido[i].date << endl;
+    }
+   
 }

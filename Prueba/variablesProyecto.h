@@ -35,7 +35,20 @@ struct Promedios{
     float promSuccesfulAtacks[MAX_PARTIDOS];
     float promBlocks[MAX_PARTIDOS];
     float promFaults[MAX_PARTIDOS];
+    float sumPts;
+    float sumPtsAgainst;
+    float sumSetsWon;
+    float sumSetsLost;
+    float sumAce;
+    float sumErrors;
+    float sumSucessfulRecep;
+    float sumSuccesfulAtacks;
+    float sumBlocks;
+    float sumFaults;
+    float promedioPts;
 }; 
+
+
 
 
 
