@@ -1,5 +1,7 @@
 #include <iostream>
 #include <string.h>
+#include <ctime> 
+#include <curses.h>
 #include "variablesProyecto.h"
 
 using namespace std;
@@ -16,6 +18,11 @@ int findID(int id);
 StatsGames findGames(int id);
 void deleteGame(int id);
 void showData(StatsGames &game);
+void userMenu();
+void principal();
+void showDate(StatsGames *game);
+void getDate(StatsGames *game);
+void findDate(StatsGames *game);
 
 //Funciones de salidas
 void menu();
@@ -67,7 +74,9 @@ StatsGames findGames(int id){
 void uppdateGame(StatsGames *game, int id){
     int position = findID(id);
     strcpy(stats[position].rival, game->rival);
-    strcpy(stats[position].date, game->date);
+    strcpy(stats[position].day, game->day);
+    strcpy(stats[position].month, game->month);
+    strcpy(stats[position].year, game->year);
     stats[position].pts = game->pts;
     stats[position].ptsAgainst = game->ptsAgainst;
     stats[position].setsWon = game->setsWon;
@@ -94,16 +103,16 @@ void deleteGame(int id){
 
 //MENU
 void menu(){
-    system("clear || cls");
     int option;
     do{
+        system("clear || cls");
         cout << "=================Menu=================" << endl;
         cout << "1. Ingresar estadisticas" << endl;
         cout << "2. Mostrar todas las estadisticas" << endl;
         cout << "3. Buscar partido " << endl;
         cout << "4. Promedio de estadisticas del equipo" << endl;
         cout << "5. Editar estadisticas" << endl;
-        cout << "6. Eliminar Partidoo" << endl;
+        cout << "6. Eliminar partido" << endl;
         cout << "7. Salir" << endl;
         cout << "Ingrese una opcion: ";
         cin >> option;
@@ -161,13 +170,20 @@ void getStats(){
     cout << "Estadisticas del partido" << endl;
     cout << "Ingrese el rival: ";
     cin >> game.rival;
-    cout << endl;
+    /*cout << endl;
     cout << "Ingrese la fecha: ";
-    scanf(" %[^\n]", game. date);
-    cout << endl;
+    scanf(" %[^\n]", game. date);*/
+    cout << "Ingrese la fecha en la que se jugo el partido\n";
+    cout << "Dia: ";
+    cin >> game.day;
+    cout << "Mes: ";
+    cin >> game.month;
+    cout << "Año: ";
+    cin >> game.year;
+   
     cout << "Ingrese un id para guardar(maximo 8 caracteres): ";
     cin >> game.id;
-    cout << endl;
+    
     if (findID(game.id) != -1){
         cout << "El id ya existe" << endl;
         return getStats();
@@ -175,31 +191,31 @@ void getStats(){
     cout << "Ingrese las estadisticas de Jaguares vs " << game. rival << endl;
     cout << "Puntos anotados: ";
     cin >> game.pts;
-    cout << endl;
+    
     cout << "Puntos en contra: ";
     cin >> game.ptsAgainst;
-    cout << endl;
+    
     cout << "Sets ganados: ";
     cin >> game.setsWon;
-    cout << endl;
+    
     cout << "Sets perdidos: ";
     cin >> game.setsLost;
-    cout << endl;
+    
     cout << "Aces: ";
     cin >> game.ace;
-    cout << endl;
+    
     cout << "Errores: ";
     cin >> game.errors;
-    cout << endl;
+    
     cout << "Recepciones exitosas: ";
     cin >> game.sucessfulRecep;
-    cout << endl;
+    
     cout << "Ataques exitosos: ";
     cin >> game.succesfulAtacks;
-    cout << endl;
+    
     cout << "Bloqueos: ";
     cin >> game.blocks;
-    cout << endl;
+    
     cout << "Faltas: ";
     cin >> game.faults;
     cout << endl;
@@ -213,13 +229,13 @@ void show_All_Stats(){
     for(int i = 0; i < pos; i++){
         cout << "Estadisticas del partido Jaguares vs " << stats[i].rival<< endl;
         showData(stats[i]);
-        cout << "=============================" << endl;
+        cout << "=================================" << endl;
     }
 }
 
 void findGame(){
     int id = 0;
-    cout << "Ingrese el id del partido: ";
+    cout << "Ingrese el ID del partido: ";
     cin >> id;
     if (findID(id) == -1){
         cout << "No se encontro el partido" << endl;
@@ -233,6 +249,9 @@ void findGame(){
 }
 
 void showData(StatsGames &game){
+    cout << "ID: " << game.id << endl;
+    cout << "Rival: " << game.rival << endl;
+    cout << "Fecha: " << game.day << "/" << game.month << "/" << game.year << endl;
     cout << "Puntos anotados: " << game.pts << endl;
     cout << "Puntos en contra: " << game.ptsAgainst << endl;
     cout << "Sets ganados: " << game.setsWon << endl;
@@ -255,6 +274,7 @@ void editGame(){
         cout << "No se encontro el partido" << endl;
         return;
     }
+    cout<<"Datos del partido"<<endl;     
     cout << "Estadisticas del partido" << endl;
     showData(stats[findID(id)]);
     cout << "Desea Editar el partido? 1. Si 2. No: ";
@@ -262,34 +282,35 @@ void editGame(){
     if (optionEdit == 2){
         return;
     }
+    system("clear || cls");
     cout << "Ingrese las estadisticas de Jaguares vs " << game. rival << endl;
     cout << "Puntos anotados: ";
     cin >> game.pts;
-    cout << endl;
+    
     cout << "Puntos en contra: ";
     cin >> game.ptsAgainst;
-    cout << endl;
+    
     cout << "Sets ganados: ";
     cin >> game.setsWon;
-    cout << endl;
+    
     cout << "Sets perdidos: ";
     cin >> game.setsLost;
-    cout << endl;
+    
     cout << "Aces: ";
     cin >> game.ace;
-    cout << endl;
+   
     cout << "Errores: ";
     cin >> game.errors;
-    cout << endl;
+   
     cout << "Recepciones exitosas: ";
     cin >> game.sucessfulRecep;
-    cout << endl;
+   
     cout << "Ataques exitosos: ";
     cin >> game.succesfulAtacks;
-    cout << endl;
+   
     cout << "Bloqueos: ";
     cin >> game.blocks;
-    cout << endl;
+ 
     cout << "Faltas: ";
     cin >> game.faults;
     cout << endl;
@@ -356,3 +377,5 @@ void showPromedios(){
     cout << "Promedio de bloqueos: " << prom.promBlocks << endl;
     cout << "Promedio de faltas: " << prom.promFaults << endl;
 }
+//Funcion para introducir fecha en la que se jugó el partido
+
