@@ -1,9 +1,11 @@
 #include <iostream>
 #include <string.h>
-#include <ctime> 
-#include <curses.h>
+#include <ctime>
+#include <conio.h> 
+#include "fectch.cpp"
 #include "variablesProyecto.h"
 
+#define CURRENT_YEAR 2024
 using namespace std;
 /*Programa para pedir estadisticas de volleyball, promediar, mostrar promedios y estadisticas,
 buscar, eliminar y editar estadisticas. */
@@ -23,6 +25,8 @@ void principal();
 void showDate(StatsGames *game);
 void getDate(StatsGames *game);
 void findDate(StatsGames *game);
+void validateUser();
+
 
 //Funciones de salidas
 void menu();
@@ -36,6 +40,7 @@ void showPromedios();
 void showGame();
 void editGame();
 void delete_Game_Data();
+int getUsuario(int usuario, int password);
 
 
 void clearstdin(){
@@ -74,9 +79,9 @@ StatsGames findGames(int id){
 void uppdateGame(StatsGames *game, int id){
     int position = findID(id);
     strcpy(stats[position].rival, game->rival);
-    strcpy(stats[position].day, game->day);
-    strcpy(stats[position].month, game->month);
-    strcpy(stats[position].year, game->year);
+    stats[position].day = game->day;
+    stats[position].month = game->month;
+    stats[position].year = game->year;
     stats[position].pts = game->pts;
     stats[position].ptsAgainst = game->ptsAgainst;
     stats[position].setsWon = game->setsWon;
@@ -166,7 +171,7 @@ void menu(){
 //agregar estadisticas
 void getStats(){
     StatsGames game;
-
+    int id;
     cout << "Estadisticas del partido" << endl;
     cout << "Ingrese el rival: ";
     cin >> game.rival;
@@ -175,15 +180,32 @@ void getStats(){
     scanf(" %[^\n]", game. date);*/
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
-    cin >> game.day;
+    fetch_input_day(game.day);
+    if (game.day > 31 || game.day < 1){
+        cout << "Ingrese un dia valido" << endl;
+        return getStats();
+    }
     cout << "Mes: ";
-    cin >> game.month;
-    cout << "Año: ";
-    cin >> game.year;
-   
-    cout << "Ingrese un id para guardar(maximo 8 caracteres): ";
-    cin >> game.id;
+    fetch_input_day(game.month);
+    if (game.month > 12 || game.month < 1)
+    {
+        cout << "Ingrese un mes valido" << endl;
+        return getStats();
+    }
     
+    cout << "Año: ";
+    fetch_input_year(game.year);
+    if(game.year > CURRENT_YEAR || game.year < 2015){
+        cout << "Ingrese un año valido" << endl;
+        return getStats();
+    }
+    
+
+    /*cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
+    cin >> game.id;*/
+    cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
+    fetch_input(game.id); // Funcion para obtener el id con maximo de caracteres, ver "fectch.cpp"
+
     if (findID(game.id) != -1){
         cout << "El id ya existe" << endl;
         return getStats();
@@ -268,8 +290,9 @@ void editGame(){
     StatsGames game;
     int id;
     int optionEdit;
-    cout << "Ingrese el id del partido a editar: ";
+    cout << "Ingrese el ID del partido a editar: ";
     cin >> id;
+    clearstdin();
     if (findID(id) == -1){
         cout << "No se encontro el partido" << endl;
         return;
@@ -282,11 +305,20 @@ void editGame(){
     if (optionEdit == 2){
         return;
     }
+    clearstdin();
     system("clear || cls");
-    cout << "Ingrese las estadisticas de Jaguares vs " << game. rival << endl;
+    cout << "Ingrese el rival: ";
+    cin >> game.rival;
+    cout << "Ingrese la fecha en la que se jugo el partido\n";
+    cout << "Dia: ";
+    cin >> game.day;
+    cout << "Mes: ";
+    cin >> game.month;
+    cout << "Año: ";
+    cin >> game.year;
     cout << "Puntos anotados: ";
     cin >> game.pts;
-    
+    clearstdin();
     cout << "Puntos en contra: ";
     cin >> game.ptsAgainst;
     
@@ -298,10 +330,10 @@ void editGame(){
     
     cout << "Aces: ";
     cin >> game.ace;
-   
+    clearstdin();
     cout << "Errores: ";
     cin >> game.errors;
-   
+    
     cout << "Recepciones exitosas: ";
     cin >> game.sucessfulRecep;
    
@@ -335,6 +367,20 @@ void delete_Game_Data(){
 }
 
 void getPromedios(){
+    if (pos == 0){
+        cout << "No hay partidos para promediar" << endl;
+        return;
+    }
+    prom.sumPts = 0;
+    prom.sumPtsAgainst = 0;
+    prom.sumSetsWon = 0;
+    prom.sumSetsLost = 0;
+    prom.sumAce = 0;
+    prom.sumErrors = 0;
+    prom.sumSucessfulRecep = 0;
+    prom.sumSuccesfulAtacks = 0;
+    prom.sumBlocks = 0;
+    prom.sumFaults = 0;
 
     for(int i = 0; i < pos; i++){
         prom.sumPts += stats[i].pts;
@@ -376,6 +422,15 @@ void showPromedios(){
     cout << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << endl;
     cout << "Promedio de bloqueos: " << prom.promBlocks << endl;
     cout << "Promedio de faltas: " << prom.promFaults << endl;
+
+
 }
-//Funcion para introducir fecha en la que se jugó el partido
+//Funcion para validar usuario 
+int getUsuario(int usuario, int password){
+    cout << "Ingrese el usuario: ";
+    cin >> usuario;
+    cout << "Ingrese la contraseña: ";
+    cin >> password;
+    
+}
 

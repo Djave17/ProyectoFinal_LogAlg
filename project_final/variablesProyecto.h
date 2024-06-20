@@ -9,10 +9,9 @@ using namespace std;
 
 typedef struct StatsGames{
     char rival[25];
-    char day[20];
-    char month[20];
-    char year[20];
-    int date; 
+    int day;
+    int month;
+    int year;
     int id; 
     int gamesPlayed;
     int pts;
