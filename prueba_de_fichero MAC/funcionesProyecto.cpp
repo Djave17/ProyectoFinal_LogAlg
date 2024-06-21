@@ -1,9 +1,10 @@
 #include <iostream>
 #include <string.h>
 #include <ctime>
-#include <conio.h> 
-#include <fstream> // Add this line
-#include "fectch.cpp"
+#include <unistd.h>
+#include <fstream> 
+#include <stdlib.h> 
+
 #include "variablesProyecto.h"
 
 #define CURRENT_YEAR 2024
@@ -60,7 +61,7 @@ void clearstdin(){
 void addGame(StatsGames *game){
     stats[pos] = *game;	
     pos++;
-    
+   
 }	
 
 //funcion para buscar un partido
@@ -99,6 +100,10 @@ void uppdateGame(StatsGames *game, int id){
     stats[position].succesfulAtacks = game->succesfulAtacks;
     stats[position].blocks = game->blocks;
     stats[position].faults = game->faults;
+    writeData(*game);
+    
+    
+
 }
 
 //funcion para eliminar un partido
@@ -110,16 +115,20 @@ void deleteGame(int id){
     StatsGames g;
     stats[pos -1] = g;
     pos--;
-    writeData(stats[pos]);
+    writeData(stats[position]);
+ 
 }
 
 
 //MENU
 void menu(){
-    int option;
+    char f; 
+    cout << "Bienvenido al sistema de estadisticas de volleyball" << endl;
     pos = loadData();
+    int option;
+    
     do{
-        system("clear || cls");
+        
         cout << "=================Menu=================" << endl;
         cout << "1. Ingresar estadisticas" << endl;
         cout << "2. Mostrar todas las estadisticas" << endl;
@@ -132,39 +141,39 @@ void menu(){
         cin >> option;
         switch(option){
             case 1:
-                system("clear || cls");
+                
                 getStats();
                 system("pause");
                 
                 
                 break;
             case 2:
-                system("clear || cls");
+                
                 show_All_Stats();
                 system("pause");
 
                 
                 break;
             case 3:
-                system("clear || cls");
+                
                 findGame();
                 system("pause");
                 
                 break;
             case 4:
-                system("clear || cls");
+                
                 showPromedios();
                 system("pause");
                 
                 break;
             case 5:
-                system("clear || cls");
+                
                 editGame();
                 system("pause");
                 
                 break;
             case 6:
-                system("clear || cls");
+                
                 delete_Game_Data();
                 system("pause");
                 break;
@@ -190,13 +199,13 @@ void getStats(){
     scanf(" %[^\n]", game. date);*/
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
-    fetch_input_day(game.day);
+    cin >> game.day;
     if (game.day > 31 || game.day < 1){
         cout << "Ingrese un dia valido" << endl;
         return getStats();
     }
     cout << "Mes: ";
-    fetch_input_day(game.month);
+    cin >> game.month;
     if (game.month > 12 || game.month < 1)
     {
         cout << "Ingrese un mes valido" << endl;
@@ -204,7 +213,7 @@ void getStats(){
     }
     
     cout << "Año: ";
-    fetch_input_year(game.year);
+    cin >> game.year;
     if(game.year > 2025 && game.year < 2000){
         cout << "Ingrese un año valido" << endl;
         return getStats();
@@ -214,8 +223,7 @@ void getStats(){
     /*cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
     cin >> game.id;*/
     cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
-    fetch_input(game.id); // Funcion para obtener el id con maximo de caracteres, ver "fectch.cpp"
-
+    cin>> game.id; // Funcion para obtener el id con maximo de caracteres, ver "fectch.cpp"
     if (findID(game.id) != -1){
         cout << "El id ya existe" << endl;
         return getStats();
@@ -254,6 +262,7 @@ void getStats(){
     addGame(&game);
     cout << "Estadisticas guardadas..." << endl;
     writeData(game);
+    
 }
 
 //mostrar estadisticas del partido 
@@ -437,6 +446,14 @@ void showPromedios(){
 
 
 }
+//Funcion para validar usuario 
+int getUsuario(int usuario, int password){
+    cout << "Ingrese el usuario: ";
+    cin >> usuario;
+    cout << "Ingrese la contraseña: ";
+    cin >> password;
+    
+}
 
 
 int loadData(){ 
@@ -495,4 +512,3 @@ void writeData(const StatsGames &stadistics){
 
     fileStats.close();
 }
-
