@@ -1,14 +1,14 @@
 {
   "configurations": [
     {
-      "name": "windows-clang-x64",
+      "name": "windows-gcc-x64",
       "includePath": [
         "${workspaceFolder}/**"
       ],
-      "compilerPath": "clang",
+      "compilerPath": "C:/TDM-GCC-64/bin/gcc.exe",
       "cStandard": "${default}",
       "cppStandard": "${default}",
-      "intelliSenseMode": "windows-clang-x64",
+      "intelliSenseMode": "windows-gcc-x64",
       "compilerArgs": [
         ""
       ]
