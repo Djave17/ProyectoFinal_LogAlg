@@ -204,7 +204,7 @@ void getStats(){
         return getStats();
     }
     
-    cout << "Año: ";
+    cout << "Año(xxxx): ";
     fetch_input_year(game.year);
     if(game.year > 2025 && game.year < 2000){
         cout << "Ingrese un año valido" << endl;
@@ -376,13 +376,13 @@ void delete_Game_Data(){
         return;
     }
     deleteGame(id);
-    cout << ANSI_COLOR_GREEN "Partido eliminado correctamente..." <<ANSI_COLOR_RESET << end;
+    
     
 }
 
 void getPromedios(){
     if (pos == 0){
-        cout <<ANSI_COLOR_RED << "No hay partidos para promediar" << ANSI_COLOR_RESET<< endl
+        cout <<ANSI_COLOR_RED << "No hay partidos para promediar" << ANSI_COLOR_RESET<< endl;
         return;
     }
     prom.sumPts = 0;
