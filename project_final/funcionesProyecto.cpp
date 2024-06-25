@@ -6,6 +6,9 @@
 #include "variablesProyecto.h"
 
 #define CURRENT_YEAR 2024
+#define MIN 4
+#define MAX 16
+#define MAX_PARTIDOS 10
 using namespace std;
 /*Programa para pedir estadisticas de volleyball, promediar, mostrar promedios y estadisticas,
 buscar, eliminar y editar estadisticas. */
@@ -14,6 +17,7 @@ StatsGames stats[MAX_PARTIDOS];
 Promedios prom;
 int pos = 0; 
 //Declaracion de funciones de comodidad
+void user();
 void addGame(StatsGames *game);
 void uppdateGame(StatsGames *game, int id);
 int findID(int id);
@@ -41,6 +45,42 @@ void showGame();
 void editGame();
 void delete_Game_Data();
 int getUsuario(int usuario, int password);
+
+void usuario() {
+    char password[MAX + 1];
+    int i = 0;
+    cout << "Bienvenido a la plataforma de control de partidos de los jaguares UAM" << endl;
+    cout << "Ingrese su usuario: ";
+    string usuario;
+    cin >> usuario;
+    cout << "Usuario: " << usuario << endl;
+    cout << "Ingrese su contraseña: ";
+    while ((password[i] = getch()) != '\r') {
+        if (password[i] == '\b') {
+            if (i > 0) {
+                i--;
+                cout << "\b \b";
+            }
+        } else {
+            cout << "*";
+            i++;
+        }
+    }
+    password[i] = '\0';
+
+    // Verificar longitud de contraseña
+    if (i < MIN) {
+        cout << "La contraseña debe tener al menos " << MIN << " caracteres." << endl;
+        return;
+    }
+
+    if (i > 0) {
+        cout << "Contraseña válida. Bienvenido!" << endl;
+        menuPrincipal();
+    } else {
+        cout << "Contraseña inválida. Intente nuevamente." << endl;
+    }
+}
 
 
 void clearstdin(){
