@@ -8,16 +8,6 @@
 #define max_date_length 2
 #define max_year_length 4
 
-// Me he montado mi propio sistema de cin porque el cin es muy MUY inseguro porque al usuario le pido un entero
-// y el cabron me pone, y cito "ASKDJMKODASWMNDIOWQNUJOIWQEDUJI9OWEDFNBUJIEWFBYUHJ"
-
-// fetch_input, mi funcion, tiene varias ventajas:
-// - La escritura se obtiene a tiempo real (el string siempre esta siendo actualizado en lugar de recibir datos hasta cuando el usuario presiona enter)
-// - Se puede enmascarar el input del usuario, por ejemplo con '*' para una contraseña
-// - Gracias a la escritura a tiempo real, se puede prevenir el uso de caracteres no deseados como letras cuando se piden enteros
-// - Es muy facil de editar a conveniencia del programador
-
-// Todas estas funciones son overloads de fetch_input original preparadas para sus necesidades
 
 // fetch_input(string) es la mas basica de todas, deja poner cualquier letra al usuario:
 void fetch_input(std::string &input_string, char mask = ' ') {

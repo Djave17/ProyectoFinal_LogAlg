@@ -12,9 +12,11 @@ using namespace std;
 /*Programa para pedir estadisticas de volleyball, promediar, mostrar promedios y estadisticas,
 buscar, eliminar y editar estadisticas. */
 
+//Variables globales 
 StatsGames stats[MAX_PARTIDOS];
 Promedios prom;
 int pos = 0; 
+
 //Declaracion de funcionesde manejo de archivos
 int loadData();
 void writeData(const StatsGames &stadistics);
@@ -132,6 +134,10 @@ void menu(){
     
     do{
         
+        cin.get();
+        getchar();
+        system("clear || cls");
+        
         cout << "=================Menu=================" << endl;
         cout << "1. Ingresar estadisticas" << endl;
         cout << "2. Mostrar todas las estadisticas" << endl;
@@ -144,41 +150,43 @@ void menu(){
         cin >> option;
         switch(option){
             case 1:
-                
+                system("clear || cls");
                 getStats();
-                system("pause");
+                
                 
                 
                 break;
             case 2:
-                
+                system("clear || cls");
                 show_All_Stats();
-                system("pause");
+                
 
                 
                 break;
             case 3:
-                
+                system("clear || cls");
                 findGame();
-                system("pause");
+                
                 
                 break;
             case 4:
-                
+                system("clear || cls");
+                loadPromedio();
                 showPromedios();
-                system("pause");
+                
                 
                 break;
             case 5:
-                
+                system("clear || cls");
                 editGame();
-                system("pause");
+                
                 
                 break;
             case 6:
-                
+                system("clear || cls");
                 delete_Game_Data();
-                system("pause");
+                
+
                 break;
             case 7:
                 cout << "Saliendo..." << endl;
@@ -193,13 +201,12 @@ void menu(){
 void getStats(){
     
     StatsGames game;
-    int id;
+
     cout << "Estadisticas del partido" << endl;
     cout << "Ingrese el rival: ";
     cin >> game.rival;
-    /*cout << endl;
-    cout << "Ingrese la fecha: ";
-    scanf(" %[^\n]", game. date);*/
+
+
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
     cin >> game.day;
@@ -215,16 +222,15 @@ void getStats(){
         return getStats();
     }
     
-    cout << "Año: ";
+    cout << "Año(xxxx): ";
     cin >> game.year;
-    if(game.year > 2025 || game.year < 2000){
+    if(game.year > 2024 && game.year < 2000){
         cout << "Ingrese un año valido" << endl;
         return getStats();
     }
     
 
-    /*cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
-    cin >> game.id;*/
+
     cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
     cin>> game.id; // Funcion para obtener el id con maximo de caracteres, ver "fectch.cpp"
     if (findID(game.id) != -1){
@@ -273,7 +279,7 @@ void getStats(){
     cin >> game.faults;
     cout << endl;
     addGame(&game);
-    cout << "Estadisticas guardadas..." << endl;
+    cout << ANSI_COLOR_GREEN "Estadisticas guardadas correctamente..." << ANSI_COLOR_RESET << endl;
     writeData(game);
     
 }
@@ -292,17 +298,29 @@ void findGame(){
     cout << "Ingrese el ID del partido: ";
     cin >> id;
     if (findID(id) == -1){
-        cout << "No se encontro el partido" << endl;
+        cout << ANSI_COLOR_RED "No se encontro el partido" << ANSI_COLOR_RESET << endl;
         return;
     }
-    StatsGames game = findGames(id);
-    int x = findID(id);
-    cout << "Estadisticas del partido Jaguares vs " << stats[x].rival<< endl;
-    showData(game);
+    else{ 
+           
+        StatsGames game = findGames(id);
+        int x = findID(id);
+        system("clear || cls");
+        cout<< ANSI_COLOR_GREEN << "Partido encontrado" << ANSI_COLOR_RESET << endl; 
+        cout << "Estadisticas del partido Jaguares vs " << stats[x].rival<< endl;
+        showData(game);
+    }
+        
+    
     
 }
 
 void showData(StatsGames &game){
+    if (pos == 0){
+        cout << ANSI_COLOR_RED "No hay datos"<< ANSI_COLOR_RESET << endl;
+
+        return;
+    }
     cout << "ID: " << game.id << endl;
     cout << "Rival: " << game.rival << endl;
     cout << "Fecha: " << game.day << "/" << game.month << "/" << game.year << endl;
@@ -392,7 +410,7 @@ void editGame(){
     cin >> game.faults;
     cout << endl;
     uppdateGame(&game, id);
-    cout << "Estadisticas actualizadas..." << endl;
+    cout << ANSI_COLOR_GREEN "Estadisticas actualizadas..." << ANSI_COLOR_RESET<< endl;
     writeData(game);
 }
 
@@ -405,19 +423,16 @@ void delete_Game_Data(){
     cout << "Ingrese el id del partido a eliminar: ";
     cin >> id;
     if (findID(id) == -1){
-        cout << "No se encontro el partido" << endl;
+        cout << ANSI_COLOR_RED"No se encontro el partido"  << ANSI_COLOR_RESET << endl;
         return;
     }
     deleteGame(id);
-    cout << "Partido eliminado..." << endl;
+    cout << ANSI_COLOR_GREEN "Partido eliminado correctamente..." <<ANSI_COLOR_RESET << endl;
     
 }
 
 void getPromedios(){
-    if (pos == 0){
-        cout << "No hay partidos para promediar" << endl;
-        return;
-    }
+    
     prom.sumPts = 0;
     prom.sumPtsAgainst = 0;
     prom.sumSetsWon = 0;
@@ -459,6 +474,11 @@ void getPromedios(){
 
 void showPromedios(){
 
+    if (pos == 0){
+        cout <<ANSI_COLOR_RED << "No hay partidos para promediar" << ANSI_COLOR_RESET<< endl;
+        return;
+    }
+
     getPromedios();
     cout << "Promedio de puntos anotados: " << prom.promPts << "%"<< endl;
     cout << "Promedio de puntos en contra: " << prom.pptsAgainst<< "%" << endl;
@@ -475,18 +495,13 @@ void showPromedios(){
 }
 //Funcion para validar usuario 
 int getUsuario(int usuario, int password){
-    cout << "Ingrese el usuario: ";
-    cin >> usuario;
-    cout << "Ingrese la contraseña: ";
-    cin >> password;
-    
 }
-
 
 int loadData(){ 
     ifstream fileStats("VolleyMetricStats.txt");
     if (!fileStats.is_open()){
-        cout << "No se pudo abrir el archivo" << endl;
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo, porque no hay datos que mostrar..."<< ANSI_COLOR_RESET<< endl;
+        cout << ANSI_COLOR_YELLOW "Ingrese estadisticas para mostrar"<< ANSI_COLOR_RESET << endl;
         return 0;
     }
 
@@ -543,7 +558,7 @@ void writeData(const StatsGames &stadistics){
 void loadPromedio(){ 
     ifstream filePromedio("VolleyMetricPromedio.txt");
     if (!filePromedio.is_open()){
-        cout << "No se pudo abrir el archivo" << endl;
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET<< endl;
    
     }
     while(filePromedio >> prom.sumPts){
@@ -565,7 +580,7 @@ void loadPromedio(){
 void writePromedio(const Promedios &promedio){ 
     ofstream filePromedio("VolleyMetricPromedio.txt");
     if (!filePromedio.is_open()){
-        cout << "No se pudo abrir el archivo" << endl;
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET<< endl;
         exit(1);
     }
 
