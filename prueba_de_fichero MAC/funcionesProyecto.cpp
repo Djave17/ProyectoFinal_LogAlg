@@ -6,7 +6,7 @@
 #include <stdlib.h> 
 
 #include "variablesProyecto.h"
-
+#define MAX_SETS 3
 #define CURRENT_YEAR 2024
 using namespace std;
 /*Programa para pedir estadisticas de volleyball, promediar, mostrar promedios y estadisticas,
@@ -18,6 +18,8 @@ int pos = 0;
 //Declaracion de funcionesde manejo de archivos
 int loadData();
 void writeData(const StatsGames &stadistics);
+void loadPromedio(); 
+void writePromedio(const Promedios &promedio);
 
 //Declaracion de funciones de manejo de datos
 void addGame(StatsGames *game);
@@ -125,6 +127,7 @@ void menu(){
     char f; 
     cout << "Bienvenido al sistema de estadisticas de volleyball" << endl;
     pos = loadData();
+    
     int option;
     
     do{
@@ -214,7 +217,7 @@ void getStats(){
     
     cout << "Año: ";
     cin >> game.year;
-    if(game.year > 2025 && game.year < 2000){
+    if(game.year > 2025 || game.year < 2000){
         cout << "Ingrese un año valido" << endl;
         return getStats();
     }
@@ -237,9 +240,16 @@ void getStats(){
     
     cout << "Sets ganados: ";
     cin >> game.setsWon;
-    
+    if (game.setsWon > MAX_SETS){
+        cout << "Ingrese un valor valido" << endl;
+        return getStats();
+    }
     cout << "Sets perdidos: ";
     cin >> game.setsLost;
+    if (game.setsLost > MAX_SETS){
+        cout << "Ingrese un valor valido" << endl;
+        return getStats();
+    }
     
     cout << "Aces: ";
     cin >> game.ace;
@@ -250,6 +260,9 @@ void getStats(){
     cout << "Recepciones exitosas: ";
     cin >> game.sucessfulRecep;
     
+    cout << "Recepciones fallidas: ";
+    cin >> game.failedRecep;
+
     cout << "Ataques exitosos: ";
     cin >> game.succesfulAtacks;
     
@@ -330,10 +343,23 @@ void editGame(){
     cin >> game.rival;
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
+    if(game.day > 31 || game.day < 1){
+        cout << "Ingrese un dia valido" << endl;
+        return getStats();
+    }
     cin >> game.day;
     cout << "Mes: ";
+    if(game.month > 12 || game.month < 1){
+        cout << "Ingrese un mes valido" << endl;
+        return getStats();
+    }
+
     cin >> game.month;
     cout << "Año: ";
+    if(game.year > 2025 && game.year < 2000){
+        cout << "Ingrese un año valido" << endl;
+        return getStats();
+    }
     cin >> game.year;
     cout << "Puntos anotados: ";
     cin >> game.pts;
@@ -426,23 +452,24 @@ void getPromedios(){
     prom.promSuccesfulAtacks = prom.sumSuccesfulAtacks / pos;
     prom.promBlocks = prom.sumBlocks / pos;
     prom.promFaults = prom.sumFaults / pos;
-    
-    
+
+    writePromedio(prom);
+
 }
 
 void showPromedios(){
 
     getPromedios();
-    cout << "Promedio de puntos anotados: " << prom.promPts << endl;
-    cout << "Promedio de puntos en contra: " << prom.pptsAgainst << endl;
-    cout << "Promedio de sets ganados: " << prom.promSetsWon << endl;
-    cout << "Promedio de sets perdidos: " << prom.promSetsLost << endl;
-    cout << "Promedio de aces: " << prom.promAce << endl;
-    cout << "Promedio de errores: " << prom.promErrors << endl;
-    cout << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << endl;
-    cout << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << endl;
-    cout << "Promedio de bloqueos: " << prom.promBlocks << endl;
-    cout << "Promedio de faltas: " << prom.promFaults << endl;
+    cout << "Promedio de puntos anotados: " << prom.promPts << "%"<< endl;
+    cout << "Promedio de puntos en contra: " << prom.pptsAgainst<< "%" << endl;
+    cout << "Promedio de sets ganados: " << prom.promSetsWon<< "%" << endl;
+    cout << "Promedio de sets perdidos: " << prom.promSetsLost<< "%" << endl;
+    cout << "Promedio de aces: " << prom.promAce << "%" << endl;
+    cout << "Promedio de errores: " << prom.promErrors << "%" << endl;
+    cout << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep<< "%"  << endl;
+    cout << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << "%" << endl;
+    cout << "Promedio de bloqueos: " << prom.promBlocks << "%" << endl;
+    cout << "Promedio de faltas: " << prom.promFaults << "%" << endl;
 
 
 }
@@ -512,3 +539,46 @@ void writeData(const StatsGames &stadistics){
 
     fileStats.close();
 }
+
+void loadPromedio(){ 
+    ifstream filePromedio("VolleyMetricPromedio.txt");
+    if (!filePromedio.is_open()){
+        cout << "No se pudo abrir el archivo" << endl;
+   
+    }
+    while(filePromedio >> prom.sumPts){
+        filePromedio >> prom.promPts;
+        filePromedio >> prom.pptsAgainst;
+        filePromedio >> prom.promSetsWon;
+        filePromedio >> prom.promSetsLost;
+        filePromedio >> prom.promErrors;
+        filePromedio >> prom.promSuccesfulAtacks;
+        filePromedio >> prom.promSucessfulRecep;
+        filePromedio >> prom.promBlocks;
+        filePromedio >> prom.promFaults;
+    }
+   
+    filePromedio.close();
+ 
+}
+
+void writePromedio(const Promedios &promedio){ 
+    ofstream filePromedio("VolleyMetricPromedio.txt");
+    if (!filePromedio.is_open()){
+        cout << "No se pudo abrir el archivo" << endl;
+        exit(1);
+    }
+
+    filePromedio << promedio.sumPts << endl;
+    filePromedio << promedio.sumPtsAgainst << endl;
+    filePromedio << promedio.sumSetsWon << endl;
+    filePromedio << promedio.sumSetsLost << endl;
+    filePromedio << promedio.sumAce << endl;
+    filePromedio << promedio.sumErrors << endl;
+    filePromedio << promedio.sumSucessfulRecep << endl;
+    filePromedio << promedio.sumSuccesfulAtacks << endl;
+    filePromedio << promedio.sumBlocks << endl;
+    filePromedio << promedio.sumFaults << endl;
+    
+    filePromedio.close();
+} 

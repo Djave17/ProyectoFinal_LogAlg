@@ -22,7 +22,9 @@ typedef struct StatsGames{
     int ace;
     int errors;
     int sucessfulRecep;
+    int failedRecep;   
     int succesfulAtacks;
+    int failedAtacks; 
     int blocks;
     int faults;
 };
