@@ -1,0 +1,13 @@
+ID:1234;Rival:leones;Fecha:12/12/12;Puntos anotados:80;Puntos en contra:80;Sets ganados:80;Sets perdidos:60;Aces:80;Errores:60;Recepciones exitosas:30;Ataques exitosos:50;Bloqueos:20;Faltas:0;/
+ID:1234;Rival:leones;Fecha:12/12/12;Puntos anotados:80;Puntos en contra:80;Sets ganados:80;Sets perdidos:60;Aces:80;Errores:60;Recepciones exitosas:30;Ataques exitosos:50;Bloqueos:20;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:4321;Rival:Matagalpa;Fecha:12/6/23;Puntos anotados:70;Puntos en contra:80;Sets ganados:90;Sets perdidos:40;Aces:50;Errores:60;Recepciones exitosas:10;Ataques exitosos:2;Bloqueos:30;Faltas:80;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:0;Rival:;Fecha:0/0/0;Puntos anotados:0;Puntos en contra:0;Sets ganados:0;Sets perdidos:0;Aces:0;Errores:0;Recepciones exitosas:0;Ataques exitosos:0;Bloqueos:0;Faltas:0;/
+ID:1234;Rival:sdasd;Fecha:23/2/2;Puntos anotados:152;Puntos en contra:63;Sets ganados:16;Sets perdidos:636;Aces:5561;Errores:231;Recepciones exitosas:3541651;Ataques exitosos:6351;Bloqueos:651;Faltas:216;/
