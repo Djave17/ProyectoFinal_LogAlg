@@ -321,19 +321,19 @@ void showData(StatsGames &game){
 
         return;
     }
-    cout << "ID: " << game.id << endl;
-    cout << "Rival: " << game.rival << endl;
-    cout << "Fecha: " << game.day << "/" << game.month << "/" << game.year << endl;
-    cout << "Puntos anotados: " << game.pts << endl;
-    cout << "Puntos en contra: " << game.ptsAgainst << endl;
-    cout << "Sets ganados: " << game.setsWon << endl;
-    cout << "Sets perdidos: " << game.setsLost << endl;
-    cout << "Aces: " << game.ace << endl;
-    cout << "Errores: " << game.errors << endl;
-    cout << "Recepciones exitosas: " << game.sucessfulRecep << endl;
-    cout << "Ataques exitosos: " << game.succesfulAtacks << endl;
-    cout << "Bloqueos: " << game.blocks << endl;
-    cout << "Faltas: " << game.faults << endl;
+    cout <<ANSI_COLOR_YELLOW<<"ID: " << game.id <<ANSI_COLOR_RESET<<endl;
+    cout <<ANSI_COLOR_YELLOW<<"Rival: " << game.rival <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_YELLOW<<"Fecha: " << game.day << "/" << game.month << "/" << game.year <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_GREEN<<"Puntos anotados: " << game.pts <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_RED<<"Puntos en contra: " << game.ptsAgainst <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_GREEN<<"Sets ganados: " << game.setsWon <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_RED<<"Sets perdidos: " << game.setsLost <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_YELLOW<<"Aces: " << game.ace <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_RED<<"Errores: " << game.errors <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_GREEN<<"Recepciones exitosas: " << game.sucessfulRecep <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_GREEN<<"Ataques exitosos: " << game.succesfulAtacks <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_YELLOW<<"Bloqueos: " << game.blocks <<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_RED<<"Faltas: " << game.faults <<ANSI_COLOR_RESET<< endl;
 }
 
 void editGame(){
@@ -480,16 +480,16 @@ void showPromedios(){
     }
 
     getPromedios();
-    cout << "Promedio de puntos anotados: " << prom.promPts << "%"<< endl;
-    cout << "Promedio de puntos en contra: " << prom.pptsAgainst<< "%" << endl;
-    cout << "Promedio de sets ganados: " << prom.promSetsWon<< "%" << endl;
-    cout << "Promedio de sets perdidos: " << prom.promSetsLost<< "%" << endl;
-    cout << "Promedio de aces: " << prom.promAce << "%" << endl;
-    cout << "Promedio de errores: " << prom.promErrors << "%" << endl;
-    cout << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep<< "%"  << endl;
-    cout << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << "%" << endl;
-    cout << "Promedio de bloqueos: " << prom.promBlocks << "%" << endl;
-    cout << "Promedio de faltas: " << prom.promFaults << "%" << endl;
+    cout <<ANSI_COLOR_GREEN <<"Promedio de puntos anotados: " << prom.promPts << "%"<<ANSI_COLOR_RESET<<endl;
+    cout <<ANSI_COLOR_RED <<"Promedio de puntos en contra: " << prom.pptsAgainst<< "%"<<ANSI_COLOR_RESET<< endl;
+    cout <<ANSI_COLOR_GREEN <<"Promedio de sets ganados: " << prom.promSetsWon<< "%"<<ANSI_COLOR_RESET <<endl;
+    cout <<ANSI_COLOR_GREEN <<"Promedio de sets perdidos: " << prom.promSetsLost<< "%"<<ANSI_COLOR_RESET << endl;
+    cout <<ANSI_COLOR_YELLOW <<"Promedio de aces: " << prom.promAce << "%"<<ANSI_COLOR_RESET << endl;
+    cout <<ANSI_COLOR_RED <<"Promedio de errores: " << prom.promErrors << "%"<<ANSI_COLOR_RESET << endl;
+    cout <<ANSI_COLOR_GREEN <<"Promedio de recepciones exitosas: " << prom.promSucessfulRecep<< "%"<<ANSI_COLOR_RESET  << endl;
+    cout <<ANSI_COLOR_GREEN <<"Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << "%"<<ANSI_COLOR_RESET << endl;
+    cout <<ANSI_COLOR_YELLOW <<"Promedio de bloqueos: " << prom.promBlocks << "%"<<ANSI_COLOR_RESET << endl;
+    cout <<ANSI_COLOR_RED<<"Promedio de faltas: " << prom.promFaults << "%"<<ANSI_COLOR_RESET << endl;
 
 
 }
