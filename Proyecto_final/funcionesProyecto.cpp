@@ -17,10 +17,13 @@ buscar, eliminar y editar estadisticas. */
 
 // Variables gloables
 StatsGames stats[MAX_PARTIDOS];
+USERS users[MAX_USERS];
 Promedios prom;
 int pos = 0;
+int positionUser = 0; 
 // Declaracion de funcionesde manejo de archivos
 int loadData();
+int loadUser();
 void writeData(const StatsGames &stadistics);
 void saveAll();
 void loadPromedio();
@@ -38,11 +41,13 @@ void principal();
 void showDate(StatsGames *game);
 void getDate(StatsGames *game);
 void findDate(StatsGames *game);
+
+void getUsers(USERS *users);
 void validateUser();
 
 // Funciones de salidas
+void usersMenu();
 void menu();
-void submenu();
 void getStats();
 void findGame();
 void show_All_Stats();
@@ -150,7 +155,7 @@ void deleteGame(int id)// funcion para eliminar un partido mediante el id y la c
 // MENU
 void menu()
 {
-    printWelcomeAnimation();
+    
     
 
     int option;
@@ -166,7 +171,8 @@ void menu()
         cout << "4. Promedio de estadisticas del equipo" << endl;
         cout << "5. Editar estadisticas" << endl;
         cout << "6. Eliminar partido" << endl;
-        cout << "7. Salir" << endl;
+        cout << "7. Cerrar sesion" << endl;
+    
         cout << "Ingrese una opcion: ";
         cin >> option;
         switch (option)
@@ -208,7 +214,8 @@ void menu()
             system("pause");
             break;
         case 7:
-            cout << "Saliendo..." << endl;
+            cout << "Cerrando sesión..." << endl;
+
             break;
         default:
             cout << "Opcion no valida" << endl;
@@ -221,7 +228,6 @@ void getStats()
 {
 
     StatsGames game;
-    int id;
     cout << "Estadisticas del partido" << endl;
     cout << "Ingrese el rival: ";
     cin >> game.rival;
@@ -575,7 +581,7 @@ void showPromedios()
     if(prom.promPts < 60){
         cout << ANSI_COLOR_RED << "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
     }
-    else if(prom.promPts > 60 && prom.promPts > 70){
+    else if(prom.promPts >= 60 && prom.promPts >= 70){
         cout << ANSI_COLOR_YELLOW<< "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
     }
     else if (prom.promPts > 70){
@@ -585,31 +591,31 @@ void showPromedios()
     if(prom.pptsAgainst < 60){
         cout << ANSI_COLOR_GREEN << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
     }
-    else if(prom.pptsAgainst > 60 && prom.pptsAgainst > 70){
+    else if(prom.pptsAgainst >= 60 && prom.pptsAgainst >= 70){
         cout << ANSI_COLOR_YELLOW << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
     }
     else if (prom.pptsAgainst > 70){
         cout << ANSI_COLOR_RED << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
     }
     //Promedio de sets ganados
-    if(prom.promSetsWon < 2){
+    if(prom.promSetsWon <= 2){
         cout << ANSI_COLOR_RED << "Promedio de sets ganados: " << prom.promSetsWon << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promSetsWon > 3){
+    else if (prom.promSetsWon >= 3){
         cout << ANSI_COLOR_GREEN << "Promedio de sets ganados: " << prom.promSetsWon << ANSI_COLOR_RESET << endl;
     }
     //Promedio de sets perdidos
-    if(prom.promSetsLost < 2){
+    if(prom.promSetsLost <= 2){
         cout << ANSI_COLOR_GREEN << "Promedio de sets perdidos: " << prom.promSetsLost << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promSetsLost > 3){
+    else if (prom.promSetsLost >= 3){
         cout << ANSI_COLOR_RED << "Promedio de sets perdidos: " << prom.promSetsLost << ANSI_COLOR_RESET << endl;
     }
     //Promedio de aces
     if(prom.promAce < 5){
         cout << ANSI_COLOR_RED << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promAce > 5 && prom.promAce < 10){
+    else if (prom.promAce >= 5 && prom.promAce <= 10){
         cout << ANSI_COLOR_YELLOW << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
     }
     else if (prom.promAce > 10){
@@ -619,17 +625,17 @@ void showPromedios()
     if(prom.promErrors < 5){
         cout << ANSI_COLOR_GREEN << "Promedio de errores: " << prom.promErrors << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promErrors > 5 && prom.promErrors < 10){
+    else if (prom.promErrors >= 5 && prom.promErrors <= 10){
         cout << ANSI_COLOR_YELLOW << "Promedio de errores: " << prom.promErrors << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promErrors > 10){
+    else if (prom.promErrors >= 10){
         cout << ANSI_COLOR_RED << "Promedio de errores: " << prom.promErrors << ANSI_COLOR_RESET << endl;
     }
     //Promedio de recepciones exitosas
     if(prom.promSucessfulRecep < 50){
         cout << ANSI_COLOR_RED << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promSucessfulRecep > 50 && prom.promSucessfulRecep < 70){
+    else if (prom.promSucessfulRecep >= 50 && prom.promSucessfulRecep <= 70){
         cout << ANSI_COLOR_YELLOW << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << ANSI_COLOR_RESET << endl;
     }
     else if (prom.promSucessfulRecep > 70){
@@ -639,7 +645,7 @@ void showPromedios()
     if(prom.promSuccesfulAtacks < 50){
         cout << ANSI_COLOR_RED << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promSuccesfulAtacks > 50 && prom.promSuccesfulAtacks < 70){
+    else if (prom.promSuccesfulAtacks >= 50 && prom.promSuccesfulAtacks <= 70){
         cout << ANSI_COLOR_YELLOW << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << ANSI_COLOR_RESET << endl;
     }
     else if (prom.promSuccesfulAtacks > 70){
@@ -649,14 +655,14 @@ void showPromedios()
     if(prom.promBlocks < 5){
         cout << ANSI_COLOR_RED << "Promedio de bloqueos: " << prom.promBlocks << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promBlocks > 5){
+    else if (prom.promBlocks >= 5){
         cout << ANSI_COLOR_GREEN << "Promedio de bloqueos: " << prom.promBlocks << ANSI_COLOR_RESET << endl;
     }
     //Promedio de faltas
-    if(prom.promFaults < 3){
+    if(prom.promFaults <= 3){
         cout << ANSI_COLOR_GREEN << "Promedio de faltas: " << prom.promFaults << ANSI_COLOR_RESET << endl;
     }
-    else if (prom.promFaults > 5 && prom.promFaults < 10){
+    else if (prom.promFaults >= 5 && prom.promFaults <= 10){
         cout << ANSI_COLOR_YELLOW << "Promedio de faltas: " << prom.promFaults << ANSI_COLOR_RESET << endl;
     }
     else if (prom.promFaults > 10){
@@ -801,4 +807,111 @@ void saveAll()
         fileStats << stats[i].faults << endl;
     }
     fileStats.close();
+}
+
+int loadUser(USERS *users, int &positionUser) {
+    ifstream fileUsers("users.txt");
+    
+    if (!fileUsers)
+    {
+        cout <<  "El archivo no existe..." << endl;
+    }
+    
+
+    if (!fileUsers.is_open()) {
+        cout << "No se pudo abrir el archivo de usuarios" << endl;
+        return 0; // Retornar un valor de error o manejar de otra manera
+    }
+    
+   
+    cout << "Archivo de usuarios cargado correctamente" << endl;
+
+    int i = 0;
+    while (fileUsers >> users[i].usernameP >> users[i].passwordP) {
+        i++;
+    }
+
+    fileUsers.close();
+    return i;
+}
+
+void addUser(USERS *users, int &positionUser) {
+    ofstream fileUsers("users.txt", ios::app);
+
+    if (!fileUsers.is_open() || !fileUsers) {
+        cout << "El archivo no existe o hubo un problema..." << endl;
+        exit(1);
+    }
+
+    fileUsers << users[positionUser].usernameP << " " << users[positionUser].passwordP << endl;
+
+    positionUser++;
+
+    fileUsers.close();
+}
+
+void getUser(USERS *users, int &positionUser) {
+    cout << "Ingrese un nuevo usuario..." << endl;
+    cout << "Ingrese su usuario: ";
+    fetch_input(users[positionUser].usernameP);
+    cout << "Ingrese su contraseña: ";
+    fetch_input(users[positionUser].passwordP);
+    addUser(users, positionUser);
+}
+
+void validateUser(USERS *users, int &positionUser) {
+    string usernameInput, passwordInput;
+
+    cout << "Ingrese su usuario: ";
+    fetch_input(usernameInput);
+    cout << "Ingrese su contraseña: ";
+    fetch_input(passwordInput);
+    
+
+    for (int i = 0; i < positionUser; i++) {
+        if (users[i].usernameP == usernameInput && users[i].passwordP == passwordInput) {
+            cout << "Usuario validado correctamente" << endl;
+            cout << "Ingresando..." << endl;
+            Sleep(4000);
+            menu();
+            return;
+        }
+    }
+
+    cout << "Usuario o contraseña incorrectos" << endl;
+}
+
+void usersMenu() {
+    int option;
+    positionUser = loadUser(users, positionUser);
+    printWelcomeAnimation();
+    
+    loadUser(users, positionUser);
+    do {
+        cout << "1. Ingresar usuario" << endl;
+        cout << "2. Salir" << endl;
+        cout << "Ingrese una opcion: ";
+        cin >> option;
+
+        switch (option) {
+            case 1:
+                if(positionUser == 0){
+                    cout << "No hay usuarios registrados" << endl;
+                    getUser(users, positionUser);
+                    Sleep(2000);
+                }
+                else{
+                    validateUser(users, positionUser);
+                    
+                }
+                break;
+            case 2:
+                cout << "Tenga un buen dia, mi tierno <3..." << endl;
+                break;
+           
+            default:
+                cout << "Opcion no valida" << endl;
+                break;
+        }
+    } while (option != 2);
 }

@@ -5,11 +5,9 @@
 
 void clearScreen() {
     // Limpiar la pantalla dependiendo del sistema operativo
-    #ifdef _WIN32
-        system("cls");
-    #else
-        system("clear");
-    #endif
+   
+    system("clear || cls");
+
 }
 
 void printTitle(const std::string& title, int delay) {

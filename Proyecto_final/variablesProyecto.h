@@ -25,6 +25,7 @@ using namespace std;
 #define ANSI_COLOR_BACKGROUND_WHITE "\x1b[47m"
 
 #define MAX_PARTIDOS 100
+#define MAX_USERS 100
 
 typedef struct StatsGames{
     string rival;
@@ -73,5 +74,11 @@ struct Promedios{
 
 
 
+struct USERS{
+    string usernameP;
+    string passwordP;
+    string username;
+    string password;
 
+};
 
