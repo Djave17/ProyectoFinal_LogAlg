@@ -1,9 +1,13 @@
 #include <iostream>
 #include <string.h>
 #include <ctime>
-#include <conio.h> 
+#include <conio.h>
+#include <windows.h>
+#include <thread>
+#include <chrono>
 #include <fstream> // Add this line
 #include "fectch.cpp"
+#include "titles.cpp"
 #include "variablesProyecto.h"
 
 #define CURRENT_YEAR 2024
@@ -11,17 +15,18 @@ using namespace std;
 /*Programa para pedir estadisticas de volleyball, promediar, mostrar promedios y estadisticas,
 buscar, eliminar y editar estadisticas. */
 
-//Variables gloables    
+// Variables gloables
 StatsGames stats[MAX_PARTIDOS];
 Promedios prom;
-int pos = 0; 
-//Declaracion de funcionesde manejo de archivos
+int pos = 0;
+// Declaracion de funcionesde manejo de archivos
 int loadData();
 void writeData(const StatsGames &stadistics);
-void loadPromedio(); 
+void saveAll();
+void loadPromedio();
 void writePromedio(const Promedios &promedio);
 
-//Declaracion de funciones de manejo de datos
+// Declaracion de funciones de manejo de datos
 void addGame(StatsGames *game);
 void uppdateGame(StatsGames *game, int id);
 int findID(int id);
@@ -35,9 +40,7 @@ void getDate(StatsGames *game);
 void findDate(StatsGames *game);
 void validateUser();
 
-
-
-//Funciones de salidas
+// Funciones de salidas
 void menu();
 void submenu();
 void getStats();
@@ -51,42 +54,48 @@ void editGame();
 void delete_Game_Data();
 int getUsuario(int usuario, int password);
 
-
-void clearstdin(){
+void clearstdin()
+{
     fflush(stdin);
     fflush(stdout);
 }
 
+// funcion para agregar un partido
 
-//funcion para agregar un partido
-
-void addGame(StatsGames *game){
-    stats[pos] = *game;	
+void addGame(StatsGames *game)
+{
+    stats[pos] = *game;
     pos++;
-    
-}	
-
-//funcion para buscar un partido
-int findID(int id){
-   for(int i = 0; i < pos; i++){
-       if(stats[i].id == id){
-        return i; 
-       }
-   }
-   return -1;
 }
-StatsGames findGames(int id){
+
+// funcion para buscar un partido
+int findID(int id)
+{
+    for (int i = 0; i < pos; i++)
+    {
+        if (stats[i].id == id)
+        {
+            return i;
+        }
+    }
+    return -1;
+}
+StatsGames findGames(int id)
+{
     StatsGames game;
-    for(int i = 0; i < pos; i++){
-        if(stats[i].id == id){
+    for (int i = 0; i < pos; i++)
+    {
+        if (stats[i].id == id)
+        {
             return stats[i];
         }
     }
     return game;
 }
 
-//funcion para actualizar un partido
-void uppdateGame(StatsGames *game, int id){
+// funcion para actualizar un partido
+void uppdateGame(StatsGames *game, int id)
+{
     int position = findID(id);
     stats[position].rival = game->rival;
     stats[position].day = game->day;
@@ -104,25 +113,52 @@ void uppdateGame(StatsGames *game, int id){
     stats[position].faults = game->faults;
 }
 
-//funcion para eliminar un partido
-void deleteGame(int id){
-    int position = findID(id);
-    for (int i = position; i < pos; i++){
-        stats[i] = stats[i+1];
+// funcion para eliminar un partido
+void deleteGame(int id)// funcion para eliminar un partido mediante el id y la creacion de un nuevo fichero temporal
+{
+    ofstream fileStats("VolleyMetricStats.txt");
+    if (!fileStats.is_open())
+    {
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
+        exit(1);
     }
-    StatsGames g;
-    stats[pos -1] = g;
+    for (int i = 0; i < pos; i++)
+    {
+        if (stats[i].id != id)
+        {
+            fileStats << stats[i].id << endl;
+            fileStats << stats[i].rival << endl;
+            fileStats << stats[i].day << endl;
+            fileStats << stats[i].month << endl;
+            fileStats << stats[i].year << endl;
+            fileStats << stats[i].pts << endl;
+            fileStats << stats[i].ptsAgainst << endl;
+            fileStats << stats[i].setsWon << endl;
+            fileStats << stats[i].setsLost << endl;
+            fileStats << stats[i].ace << endl;
+            fileStats << stats[i].errors << endl;
+            fileStats << stats[i].sucessfulRecep << endl;
+            fileStats << stats[i].succesfulAtacks << endl;
+            fileStats << stats[i].blocks << endl;
+            fileStats << stats[i].faults << endl;
+        }
+    }
+    fileStats.close();
     pos--;
-    writeData(stats[pos]);
 }
 
+// MENU
+void menu()
+{
+    printWelcomeAnimation();
+    
 
-//MENU
-void menu(){
     int option;
-    pos = loadData();
-    do{
+    do
+    {
         system("clear || cls");
+        
+        pos = loadData();
         cout << "=================Menu=================" << endl;
         cout << "1. Ingresar estadisticas" << endl;
         cout << "2. Mostrar todas las estadisticas" << endl;
@@ -133,57 +169,57 @@ void menu(){
         cout << "7. Salir" << endl;
         cout << "Ingrese una opcion: ";
         cin >> option;
-        switch(option){
-            case 1:
-                system("clear || cls");
-                getStats();
-                system("pause");
-                
-                
-                break;
-            case 2:
-                system("clear || cls");
-                show_All_Stats();
-                system("pause");
+        switch (option)
+        {
+        case 1:
+            system("clear || cls");
+            getStats();
+            system("pause");
 
-                
-                break;
-            case 3:
-                system("clear || cls");
-                findGame();
-                system("pause");
-                
-                break;
-            case 4:
-                loadPromedio();
-                system("clear || cls");
-                showPromedios();
-                system("pause");
-                
-                break;
-            case 5:
-                system("clear || cls");
-                editGame();
-                system("pause");
-                
-                break;
-            case 6:
-                system("clear || cls");
-                delete_Game_Data();
-                system("pause");
-                break;
-            case 7:
-                cout << "Saliendo..." << endl;
-                break;
-            default:
-                cout << "Opcion no valida" << endl;
-                break;
+            break;
+        case 2:
+            system("clear || cls");
+            show_All_Stats();
+            system("pause");
+
+            break;
+        case 3:
+            system("clear || cls");
+            findGame();
+            system("pause");
+
+            break;
+        case 4:
+            loadPromedio();
+            system("clear || cls");
+            showPromedios();
+            system("pause");
+
+            break;
+        case 5:
+            system("clear || cls");
+            editGame();
+            system("pause");
+
+            break;
+        case 6:
+            system("clear || cls");
+            delete_Game_Data();
+            system("pause");
+            break;
+        case 7:
+            cout << "Saliendo..." << endl;
+            break;
+        default:
+            cout << "Opcion no valida" << endl;
+            break;
         }
-    }while(option != 7);
+    } while (option != 7);
 }
-//agregar estadisticas
-void getStats(){
-    
+// agregar estadisticas
+void getStats()
+{
+
     StatsGames game;
     int id;
     cout << "Estadisticas del partido" << endl;
@@ -192,7 +228,8 @@ void getStats(){
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
     fetch_input_day(game.day);
-    if (game.day > 31 || game.day < 1){
+    if (game.day > 31 || game.day < 1)
+    {
         cout << "Ingrese un dia valido" << endl;
         return getStats();
     }
@@ -203,10 +240,11 @@ void getStats(){
         cout << "Ingrese un mes valido" << endl;
         return getStats();
     }
-    
+
     cout << "Año(xxxx): ";
     fetch_input_year(game.year);
-    if(game.year > 2025 && game.year < 2000){
+    if (game.year > 2025 && game.year < 2000)
+    {
         cout << "Ingrese un año valido" << endl;
         return getStats();
     }
@@ -214,38 +252,39 @@ void getStats(){
     cout << "Ingrese un id para guardar(maximo 4 caracteres): ";
     fetch_input(game.id); // Funcion para obtener el id con maximo de caracteres, ver "fectch.cpp"
 
-    if (findID(game.id) != -1){
+    if (findID(game.id) != -1)
+    {
         cout << "El id ya existe" << endl;
         return getStats();
     }
-    cout << "Ingrese las estadisticas de Jaguares vs " << game. rival << endl;
+    cout << "Ingrese las estadisticas de Jaguares vs " << game.rival << endl;
     cout << "Puntos anotados: ";
     cin >> game.pts;
-    
+
     cout << "Puntos en contra: ";
     cin >> game.ptsAgainst;
-    
+
     cout << "Sets ganados: ";
     cin >> game.setsWon;
-    
+
     cout << "Sets perdidos: ";
     cin >> game.setsLost;
-    
+
     cout << "Aces: ";
     cin >> game.ace;
-    
+
     cout << "Errores: ";
     cin >> game.errors;
-    
+
     cout << "Recepciones exitosas: ";
     cin >> game.sucessfulRecep;
-    
+
     cout << "Ataques exitosos: ";
     cin >> game.succesfulAtacks;
-    
+
     cout << "Bloqueos: ";
     cin >> game.blocks;
-    
+
     cout << "Faltas: ";
     cin >> game.faults;
     cout << endl;
@@ -254,68 +293,162 @@ void getStats(){
     writeData(game);
 }
 
-//mostrar estadisticas del partido 
-void show_All_Stats(){
-    for(int i = 0; i < pos; i++){
-        cout << "Estadisticas del partido Jaguares vs " << stats[i].rival<< endl;
+// mostrar estadisticas del partido
+void show_All_Stats()
+{
+    for (int i = 0; i < pos; i++)
+    {
+        cout << "Estadisticas del partido Jaguares vs " << stats[i].rival << endl;
         showData(stats[i]);
         cout << "=================================" << endl;
     }
 }
 
-void findGame(){
+void findGame()
+{
     int id = 0;
     cout << "Ingrese el ID del partido: ";
     cin >> id;
-    if (findID(id) == -1){
-        cout << ANSI_COLOR_RED "No se encontro el partido" << ANSI_COLOR_RESET << endl;;
+    if (findID(id) == -1)
+    {
+        cout << ANSI_COLOR_RED "No se encontro el partido" << ANSI_COLOR_RESET << endl;
+        ;
         return;
     }
-    else{ 
-           
+    else
+    {
+
         StatsGames game = findGames(id);
         int x = findID(id);
         system("clear || cls");
-        cout<< ANSI_COLOR_GREEN << "Partido encontrado" << ANSI_COLOR_RESET << endl; 
-        cout << "Estadisticas del partido Jaguares vs " << stats[x].rival<< endl;
+        cout << ANSI_COLOR_GREEN << "Partido encontrado" << ANSI_COLOR_RESET << endl;
+        cout << "Estadisticas del partido Jaguares vs " << stats[x].rival << endl;
         showData(game);
     }
-    
 }
 
-void showData(StatsGames &game){
+void showData(StatsGames &game)
+{
+    if (game.id == 0)
+    {
+        cout << "No hay datos" << endl;
+        return;
+    }
     cout << "ID: " << game.id << endl;
-    cout << "Rival: " << game.rival << endl;
-    cout << "Fecha: " << game.day << "/" << game.month << "/" << game.year << endl;
-    cout << "Puntos anotados: " << game.pts << endl;
-    cout << "Puntos en contra: " << game.ptsAgainst << endl;
-    cout << "Sets ganados: " << game.setsWon << endl;
-    cout << "Sets perdidos: " << game.setsLost << endl;
-    cout << "Aces: " << game.ace << endl;
-    cout << "Errores: " << game.errors << endl;
-    cout << "Recepciones exitosas: " << game.sucessfulRecep << endl;
-    cout << "Ataques exitosos: " << game.succesfulAtacks << endl;
-    cout << "Bloqueos: " << game.blocks << endl;
-    cout << "Faltas: " << game.faults << endl;
+    if(game.pts < 60){
+        cout << ANSI_COLOR_RED << "Puntos anotados: " << game.pts << ANSI_COLOR_RESET << endl;
+    }
+    else if(game.pts >= 60 && game.pts >= 70){
+        cout << ANSI_COLOR_YELLOW<< "Puntos anotados: " << game.pts << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.pts > 70){
+        cout << ANSI_COLOR_GREEN << "Puntos anotados: " << game.pts << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.ptsAgainst < 60){
+        cout << ANSI_COLOR_GREEN << "Puntos en contra: " << game.ptsAgainst << ANSI_COLOR_RESET << endl;
+    }
+    else if(game.ptsAgainst >= 60 && game.ptsAgainst >= 70){
+        cout << ANSI_COLOR_YELLOW << "Puntos en contra: " << game.ptsAgainst << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.ptsAgainst > 70){
+        cout << ANSI_COLOR_RED << "Puntos en contra: " << game.ptsAgainst << ANSI_COLOR_RESET << endl;
+    }
+
+
+    if(game.setsWon <= 2){
+        cout << ANSI_COLOR_RED << "Sets ganados: " << game.setsWon << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.setsWon >= 3){
+        cout << ANSI_COLOR_GREEN << "Sets ganados: " << game.setsWon << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.setsLost <= 2){
+        cout << ANSI_COLOR_GREEN << "Sets perdidos: " << game.setsLost << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.setsLost >= 3){
+        cout << ANSI_COLOR_RED << "Sets perdidos: " << game.setsLost << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.ace < 5){
+        cout << ANSI_COLOR_RED << "Aces: " << game.ace << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.ace >= 5 && game.ace <= 10){
+        cout << ANSI_COLOR_YELLOW << "Aces: " << game.ace << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.ace > 10){
+        cout << ANSI_COLOR_GREEN << "Aces: " << game.ace << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.errors < 5){
+        cout << ANSI_COLOR_GREEN << "Errores: " << game.errors << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.errors >= 5 && game.errors <= 10){
+        cout << ANSI_COLOR_YELLOW << "Errores: " << game.errors << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.errors > 10){
+        cout << ANSI_COLOR_RED << "Errores: " << game.errors << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.sucessfulRecep < 50){
+        cout << ANSI_COLOR_RED << "Recepciones exitosas: " << game.sucessfulRecep << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.sucessfulRecep >= 50 && game.sucessfulRecep <= 70){
+        cout << ANSI_COLOR_YELLOW << "Recepciones exitosas: " << game.sucessfulRecep << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.sucessfulRecep > 70){
+        cout << ANSI_COLOR_GREEN << "Recepciones exitosas: " << game.sucessfulRecep << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.succesfulAtacks < 50){
+        cout << ANSI_COLOR_RED << "Ataques exitosos: " << game.succesfulAtacks << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.succesfulAtacks >= 50 && game.succesfulAtacks <= 70){
+        cout << ANSI_COLOR_YELLOW << "Ataques exitosos: " << game.succesfulAtacks << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.succesfulAtacks > 70){
+        cout << ANSI_COLOR_GREEN << "Ataques exitosos: " << game.succesfulAtacks << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.blocks < 5){
+        cout << ANSI_COLOR_RED << "Bloqueos: " << game.blocks << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.blocks > 5){
+        cout << ANSI_COLOR_GREEN << "Bloqueos: " << game.blocks << ANSI_COLOR_RESET << endl;
+    }
+
+    if(game.faults < 5){
+        cout << ANSI_COLOR_GREEN << "Faltas: " << game.faults << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.faults >= 5 && game.faults <= 8){
+        cout << ANSI_COLOR_YELLOW << "Faltas: " << game.faults << ANSI_COLOR_RESET << endl;
+    }
+    else if (game.faults > 8){
+        cout << ANSI_COLOR_RED << "Faltas: " << game.faults << ANSI_COLOR_RESET << endl;
+    }
+
 }
 
-void editGame(){
+void editGame()
+{
     StatsGames game;
     int id;
     int optionEdit;
     cout << "Ingrese el ID del partido a editar: ";
     cin >> id;
     clearstdin();
-    if (findID(id) == -1){
+    if (findID(id) == -1)
+    {
         cout << "No se encontro el partido" << endl;
         return;
     }
-    cout<<"Datos del partido"<<endl;     
+    cout << "Datos del partido" << endl;
     cout << "Estadisticas del partido" << endl;
     showData(stats[findID(id)]);
     cout << "Desea Editar el partido? 1. Si 2. No: ";
     cin >> optionEdit;
-    if (optionEdit == 2){
+    if (optionEdit == 2)
+    {
         return;
     }
     clearstdin();
@@ -334,55 +467,66 @@ void editGame(){
     clearstdin();
     cout << "Puntos en contra: ";
     cin >> game.ptsAgainst;
-    
+
     cout << "Sets ganados: ";
     cin >> game.setsWon;
-    
+
     cout << "Sets perdidos: ";
     cin >> game.setsLost;
-    
+
     cout << "Aces: ";
     cin >> game.ace;
     clearstdin();
     cout << "Errores: ";
     cin >> game.errors;
-    
+
     cout << "Recepciones exitosas: ";
     cin >> game.sucessfulRecep;
-   
+
     cout << "Ataques exitosos: ";
     cin >> game.succesfulAtacks;
-   
+
     cout << "Bloqueos: ";
     cin >> game.blocks;
- 
+
     cout << "Faltas: ";
     cin >> game.faults;
     cout << endl;
     uppdateGame(&game, id);
-    cout << ANSI_COLOR_GREEN "Estadisticas actualizadas..." << ANSI_COLOR_RESET<< endl;
+    cout << ANSI_COLOR_GREEN "Estadisticas actualizadas..." << ANSI_COLOR_RESET << endl;
     writeData(game);
 }
 
-void delete_Game_Data(){
+void delete_Game_Data()
+{
     int id = 0;
-    if (pos == 0){
+    int option_Eliminar;
+    
+    if (pos == 0)
+    {
         cout << "No hay partidos para eliminar" << endl;
         return;
     }
+    
     cout << "Ingrese el id del partido a eliminar: ";
-    if (findID(id) == -1){
-        cout << ANSI_COLOR_RED"No se encontro el partido"  << ANSI_COLOR_RESET << endl;
+    cin >> id;
+    showData(stats[findID(id)]);
+    if (findID(id) == -1)
+    {
+        cout << ANSI_COLOR_RED "No se encontro el partido" << ANSI_COLOR_RESET << endl;
         return;
     }
+    cout << "Desea eliminar el partido? 1. Si 2. No: ";
+    cin >> option_Eliminar;
+    
     deleteGame(id);
-    
-    
 }
 
-void getPromedios(){
-    if (pos == 0){
-        cout <<ANSI_COLOR_RED << "No hay partidos para promediar" << ANSI_COLOR_RESET<< endl;
+void getPromedios()
+{
+    if (pos == 0)
+    {
+        cout << ANSI_COLOR_RED << "No hay partidos para promediar" << ANSI_COLOR_RESET << endl;
         return;
     }
     prom.sumPts = 0;
@@ -396,7 +540,8 @@ void getPromedios(){
     prom.sumBlocks = 0;
     prom.sumFaults = 0;
 
-    for(int i = 0; i < pos; i++){
+    for (int i = 0; i < pos; i++)
+    {
         prom.sumPts += stats[i].pts;
         prom.sumPtsAgainst += stats[i].ptsAgainst;
         prom.sumSetsWon += stats[i].setsWon;
@@ -408,7 +553,7 @@ void getPromedios(){
         prom.sumBlocks += stats[i].blocks;
         prom.sumFaults += stats[i].faults;
     }
-   
+
     prom.promPts = prom.sumPts / pos;
     prom.pptsAgainst = prom.sumPtsAgainst / pos;
     prom.promSetsWon = prom.sumSetsWon / pos;
@@ -419,32 +564,113 @@ void getPromedios(){
     prom.promSuccesfulAtacks = prom.sumSuccesfulAtacks / pos;
     prom.promBlocks = prom.sumBlocks / pos;
     prom.promFaults = prom.sumFaults / pos;
-    
-    
 }
 
-void showPromedios(){
+void showPromedios()
+{
 
     getPromedios();
-    cout << "Promedio de puntos anotados: " << prom.promPts << endl;
-    cout << "Promedio de puntos en contra: " << prom.pptsAgainst << endl;
-    cout << "Promedio de sets ganados: " << prom.promSetsWon << endl;
-    cout << "Promedio de sets perdidos: " << prom.promSetsLost << endl;
-    cout << "Promedio de aces: " << prom.promAce << endl;
-    cout << "Promedio de errores: " << prom.promErrors << endl;
-    cout << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << endl;
-    cout << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << endl;
-    cout << "Promedio de bloqueos: " << prom.promBlocks << endl;
-    cout << "Promedio de faltas: " << prom.promFaults << endl;
-
+    cout << "Promedio de estadisticas del equipo" << endl;
+    //Promedio de puntos anotados 
+    if(prom.promPts < 60){
+        cout << ANSI_COLOR_RED << "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
+    }
+    else if(prom.promPts > 60 && prom.promPts > 70){
+        cout << ANSI_COLOR_YELLOW<< "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promPts > 70){
+        cout << ANSI_COLOR_GREEN << "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de puntos en contra
+    if(prom.pptsAgainst < 60){
+        cout << ANSI_COLOR_GREEN << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
+    }
+    else if(prom.pptsAgainst > 60 && prom.pptsAgainst > 70){
+        cout << ANSI_COLOR_YELLOW << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.pptsAgainst > 70){
+        cout << ANSI_COLOR_RED << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de sets ganados
+    if(prom.promSetsWon < 2){
+        cout << ANSI_COLOR_RED << "Promedio de sets ganados: " << prom.promSetsWon << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promSetsWon > 3){
+        cout << ANSI_COLOR_GREEN << "Promedio de sets ganados: " << prom.promSetsWon << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de sets perdidos
+    if(prom.promSetsLost < 2){
+        cout << ANSI_COLOR_GREEN << "Promedio de sets perdidos: " << prom.promSetsLost << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promSetsLost > 3){
+        cout << ANSI_COLOR_RED << "Promedio de sets perdidos: " << prom.promSetsLost << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de aces
+    if(prom.promAce < 5){
+        cout << ANSI_COLOR_RED << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promAce > 5 && prom.promAce < 10){
+        cout << ANSI_COLOR_YELLOW << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promAce > 10){
+        cout << ANSI_COLOR_GREEN << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de errores
+    if(prom.promErrors < 5){
+        cout << ANSI_COLOR_GREEN << "Promedio de errores: " << prom.promErrors << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promErrors > 5 && prom.promErrors < 10){
+        cout << ANSI_COLOR_YELLOW << "Promedio de errores: " << prom.promErrors << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promErrors > 10){
+        cout << ANSI_COLOR_RED << "Promedio de errores: " << prom.promErrors << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de recepciones exitosas
+    if(prom.promSucessfulRecep < 50){
+        cout << ANSI_COLOR_RED << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promSucessfulRecep > 50 && prom.promSucessfulRecep < 70){
+        cout << ANSI_COLOR_YELLOW << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promSucessfulRecep > 70){
+        cout << ANSI_COLOR_GREEN << "Promedio de recepciones exitosas: " << prom.promSucessfulRecep << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de ataques exitosos
+    if(prom.promSuccesfulAtacks < 50){
+        cout << ANSI_COLOR_RED << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promSuccesfulAtacks > 50 && prom.promSuccesfulAtacks < 70){
+        cout << ANSI_COLOR_YELLOW << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promSuccesfulAtacks > 70){
+        cout << ANSI_COLOR_GREEN << "Promedio de ataques exitosos: " << prom.promSuccesfulAtacks << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de bloqueos
+    if(prom.promBlocks < 5){
+        cout << ANSI_COLOR_RED << "Promedio de bloqueos: " << prom.promBlocks << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promBlocks > 5){
+        cout << ANSI_COLOR_GREEN << "Promedio de bloqueos: " << prom.promBlocks << ANSI_COLOR_RESET << endl;
+    }
+    //Promedio de faltas
+    if(prom.promFaults < 3){
+        cout << ANSI_COLOR_GREEN << "Promedio de faltas: " << prom.promFaults << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promFaults > 5 && prom.promFaults < 10){
+        cout << ANSI_COLOR_YELLOW << "Promedio de faltas: " << prom.promFaults << ANSI_COLOR_RESET << endl;
+    }
+    else if (prom.promFaults > 10){
+        cout << ANSI_COLOR_RED << "Promedio de faltas: " << prom.promFaults << ANSI_COLOR_RESET << endl;
+    }
 
 }
 
-
-int loadData(){ 
+int loadData()
+{
     ifstream fileStats("VolleyMetricStats.txt");
-    if (!fileStats.is_open()){
-        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET<< endl;
+    if (!fileStats.is_open())
+    {
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
         return 0;
     }
 
@@ -469,13 +695,15 @@ int loadData(){
         i++;
     }
     fileStats.close();
-    return i; 
+    return i;
 }
 
-void writeData(const StatsGames &stadistics){ 
+void writeData(const StatsGames &stadistics)
+{
     ofstream fileStats("VolleyMetricStats.txt", ios::app);
-    if (!fileStats.is_open()){
-        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET<< endl;
+    if (!fileStats.is_open())
+    {
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
         exit(1);
     }
 
@@ -498,14 +726,16 @@ void writeData(const StatsGames &stadistics){
     fileStats.close();
 }
 
-void loadPromedio(){ 
+void loadPromedio()
+{
 
     ifstream filePromedio("VolleyMetricPromedio.txt");
-    if (!filePromedio.is_open()){
-        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET<< endl;
-   
+    if (!filePromedio.is_open())
+    {
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
     }
-    while(filePromedio >> prom.sumPts){
+    while (filePromedio >> prom.sumPts)
+    {
         filePromedio >> prom.promPts;
         filePromedio >> prom.pptsAgainst;
         filePromedio >> prom.promSetsWon;
@@ -516,15 +746,16 @@ void loadPromedio(){
         filePromedio >> prom.promBlocks;
         filePromedio >> prom.promFaults;
     }
-   
+
     filePromedio.close();
- 
 }
 
-void writePromedio(const Promedios &promedio){ 
+void writePromedio(const Promedios &promedio)
+{
     ofstream filePromedio("VolleyMetricPromedio.txt");
-    if (!filePromedio.is_open()){
-        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET<< endl;
+    if (!filePromedio.is_open())
+    {
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
         exit(1);
     }
 
@@ -538,6 +769,36 @@ void writePromedio(const Promedios &promedio){
     filePromedio << promedio.sumSuccesfulAtacks << endl;
     filePromedio << promedio.sumBlocks << endl;
     filePromedio << promedio.sumFaults << endl;
-    
+
     filePromedio.close();
-} 
+}
+void saveAll()
+{
+    ofstream fileStats("VolleyMetricStats.txt", ios::app);
+    if (!fileStats.is_open())
+    {
+        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
+        exit(1);
+    }
+
+    for (int i = 0; i < pos; i++)
+    {
+
+        fileStats << stats[i].id << endl;
+        fileStats << stats[i].rival << endl;
+        fileStats << stats[i].day << endl;
+        fileStats << stats[i].month << endl;
+        fileStats << stats[i].year << endl;
+        fileStats << stats[i].pts << endl;
+        fileStats << stats[i].ptsAgainst << endl;
+        fileStats << stats[i].setsWon << endl;
+        fileStats << stats[i].setsLost << endl;
+        fileStats << stats[i].ace << endl;
+        fileStats << stats[i].errors << endl;
+        fileStats << stats[i].sucessfulRecep << endl;
+        fileStats << stats[i].succesfulAtacks << endl;
+        fileStats << stats[i].blocks << endl;
+        fileStats << stats[i].faults << endl;
+    }
+    fileStats.close();
+}
