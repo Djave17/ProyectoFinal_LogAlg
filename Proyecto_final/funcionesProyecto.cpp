@@ -674,10 +674,11 @@ void showPromedios()
 int loadData()
 {
     ifstream fileStats("VolleyMetricStats.txt");
-    if (!fileStats.is_open())
+    if (!fileStats)
     {
-        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
-        return 0;
+        ofstream fileStats("VolleyMetricPromedio.txt", ios::out);
+    }else{
+        cout<< ANSI_COLOR_GREEN "Cargando datos..." ANSI_COLOR_RESET << endl; 
     }
 
     int i = 0;
@@ -736,9 +737,11 @@ void loadPromedio()
 {
 
     ifstream filePromedio("VolleyMetricPromedio.txt");
-    if (!filePromedio.is_open())
+    if (!filePromedio)
     {
-        cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
+        ofstream filepromedio("VolleyMetricPromedio.txt");
+    }else{
+        cout<< ANSI_COLOR_GREEN "Cargando datos..." ANSI_COLOR_RESET << endl; 
     }
     while (filePromedio >> prom.sumPts)
     {
@@ -762,7 +765,7 @@ void writePromedio(const Promedios &promedio)
     if (!filePromedio.is_open())
     {
         cout << ANSI_COLOR_RED "No se pudo abrir el archivo" << ANSI_COLOR_RESET << endl;
-        exit(1);
+        
     }
 
     filePromedio << promedio.sumPts << endl;
@@ -814,7 +817,8 @@ int loadUser(USERS *users, int &positionUser) {
     
     if (!fileUsers)
     {
-        cout <<  "El archivo no existe..." << endl;
+        cout <<  "Creando archivo..." << endl;
+        ofstream fileUsers("users.txt", ios::out);
     }
     
 
@@ -855,7 +859,7 @@ void getUser(USERS *users, int &positionUser) {
     cout << "Ingrese su usuario: ";
     fetch_input(users[positionUser].usernameP);
     cout << "Ingrese su contraseña: ";
-    fetch_input(users[positionUser].passwordP);
+    fetch_input_password(users[positionUser].passwordP);
     addUser(users, positionUser);
 }
 
@@ -865,7 +869,7 @@ void validateUser(USERS *users, int &positionUser) {
     cout << "Ingrese su usuario: ";
     fetch_input(usernameInput);
     cout << "Ingrese su contraseña: ";
-    fetch_input(passwordInput);
+    fetch_input_password(passwordInput);
     
 
     for (int i = 0; i < positionUser; i++) {
@@ -888,6 +892,7 @@ void usersMenu() {
     
     loadUser(users, positionUser);
     do {
+        system("cls"); 
         cout << "1. Ingresar usuario" << endl;
         cout << "2. Nuevo Usuario" << endl;
         cout << "3. Salir"<< endl;

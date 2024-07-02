@@ -24,7 +24,7 @@ void printWelcomeAnimation() {
     std::string welcomeTitle = "Bienvenido a VolleyMetrics";
     std::string welcomeSubtitle = "Presiona cualquier tecla para continuar";
 
-    int delay = 100; // Milisegundos
+    int delay = 35; // Milisegundos
 
     // Imprimir el título animado
     while (!kbhit()) { // Esperar hasta que se presione una tecla
