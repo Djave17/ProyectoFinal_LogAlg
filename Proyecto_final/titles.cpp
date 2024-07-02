@@ -33,7 +33,7 @@ void printWelcomeAnimation() {
         printTitle(welcomeTitle, delay);
         printTitle(welcomeSubtitle, delay);
 
-        std::this_thread::sleep_for(std::chrono::seconds(3));
+        std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 
     // Limpiar la pantalla al finalizar

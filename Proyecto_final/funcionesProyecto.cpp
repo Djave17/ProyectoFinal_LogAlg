@@ -579,47 +579,47 @@ void showPromedios()
     cout << "Promedio de estadisticas del equipo" << endl;
     //Promedio de puntos anotados 
     if(prom.promPts < 60){
-        cout << ANSI_COLOR_RED << "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_RED << "Promedio de puntos anotados: " << prom.promPts <<"%" ANSI_COLOR_RESET << endl;
     }
     else if(prom.promPts >= 60 && prom.promPts >= 70){
-        cout << ANSI_COLOR_YELLOW<< "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_YELLOW<< "Promedio de puntos anotados: " << prom.promPts << "%"ANSI_COLOR_RESET << endl;
     }
     else if (prom.promPts > 70){
-        cout << ANSI_COLOR_GREEN << "Promedio de puntos anotados: " << prom.promPts << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_GREEN << "Promedio de puntos anotados: " << prom.promPts << "%" ANSI_COLOR_RESET << endl;
     }
     //Promedio de puntos en contra
     if(prom.pptsAgainst < 60){
-        cout << ANSI_COLOR_GREEN << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_GREEN << "Promedio de puntos en contra: " << prom.pptsAgainst << "%" ANSI_COLOR_RESET << endl;
     }
     else if(prom.pptsAgainst >= 60 && prom.pptsAgainst >= 70){
-        cout << ANSI_COLOR_YELLOW << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_YELLOW << "Promedio de puntos en contra: " << prom.pptsAgainst << "%" ANSI_COLOR_RESET << endl;
     }
     else if (prom.pptsAgainst > 70){
-        cout << ANSI_COLOR_RED << "Promedio de puntos en contra: " << prom.pptsAgainst << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_RED << "Promedio de puntos en contra: " << prom.pptsAgainst <<"%"  ANSI_COLOR_RESET << endl;
     }
     //Promedio de sets ganados
     if(prom.promSetsWon <= 2){
-        cout << ANSI_COLOR_RED << "Promedio de sets ganados: " << prom.promSetsWon << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_RED << "Promedio de sets ganados: " << prom.promSetsWon << "%" ANSI_COLOR_RESET << endl;
     }
     else if (prom.promSetsWon >= 3){
-        cout << ANSI_COLOR_GREEN << "Promedio de sets ganados: " << prom.promSetsWon << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_GREEN << "Promedio de sets ganados: " << prom.promSetsWon << "%" ANSI_COLOR_RESET << endl;
     }
     //Promedio de sets perdidos
     if(prom.promSetsLost <= 2){
-        cout << ANSI_COLOR_GREEN << "Promedio de sets perdidos: " << prom.promSetsLost << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_GREEN << "Promedio de sets perdidos: " << prom.promSetsLost << "%" ANSI_COLOR_RESET << endl;
     }
     else if (prom.promSetsLost >= 3){
-        cout << ANSI_COLOR_RED << "Promedio de sets perdidos: " << prom.promSetsLost << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_RED << "Promedio de sets perdidos: " << prom.promSetsLost << "%"ANSI_COLOR_RESET << endl;
     }
     //Promedio de aces
     if(prom.promAce < 5){
-        cout << ANSI_COLOR_RED << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_RED << "Promedio de aces: " << prom.promAce << "%" ANSI_COLOR_RESET << endl;
     }
     else if (prom.promAce >= 5 && prom.promAce <= 10){
-        cout << ANSI_COLOR_YELLOW << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_YELLOW << "Promedio de aces: " << prom.promAce <<"%" ANSI_COLOR_RESET << endl;
     }
     else if (prom.promAce > 10){
-        cout << ANSI_COLOR_GREEN << "Promedio de aces: " << prom.promAce << ANSI_COLOR_RESET << endl;
+        cout << ANSI_COLOR_GREEN << "Promedio de aces: " << prom.promAce << "%" ANSI_COLOR_RESET << endl;
     }
     //Promedio de errores
     if(prom.promErrors < 5){
@@ -889,7 +889,8 @@ void usersMenu() {
     loadUser(users, positionUser);
     do {
         cout << "1. Ingresar usuario" << endl;
-        cout << "2. Salir" << endl;
+        cout << "2. Nuevo Usuario" << endl;
+        cout << "3. Salir"<< endl;
         cout << "Ingrese una opcion: ";
         cin >> option;
 
@@ -906,12 +907,17 @@ void usersMenu() {
                 }
                 break;
             case 2:
-                cout << "Tenga un buen dia, mi tierno <3..." << endl;
+                getUser(users, positionUser);
+
+                Sleep(2000);
+                break;
+            case 3: 
+                cout << "Adios, mi tierno <3"; 
                 break;
            
             default:
                 cout << "Opcion no valida" << endl;
                 break;
         }
-    } while (option != 2);
+    } while (option != 3);
 }
