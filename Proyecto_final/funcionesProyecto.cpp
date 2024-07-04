@@ -231,6 +231,7 @@ void getStats()
     cout << "Estadisticas del partido" << endl;
     cout << "Ingrese el rival: ";
     cin >> game.rival;
+    clearstdin();
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
     fetch_input_day(game.day);
@@ -249,9 +250,9 @@ void getStats()
 
     cout << "Año(xxxx): ";
     fetch_input_year(game.year);
-    if (game.year > 2025 && game.year < 2000)
+    if (game.year > CURRENT_YEAR || game.year < 2010)
     {
-        cout << "Ingrese un año valido" << endl;
+        cout << "Ingrese un año valido, mayor a 2010..." << endl;
         return getStats();
     }
 
@@ -265,34 +266,45 @@ void getStats()
     }
     cout << "Ingrese las estadisticas de Jaguares vs " << game.rival << endl;
     cout << "Puntos anotados: ";
-    cin >> game.pts;
+    fetch_input(game.pts);
+    clearstdin();
 
     cout << "Puntos en contra: ";
-    cin >> game.ptsAgainst;
+    fetch_input(game.ptsAgainst);
+    clearstdin();
 
     cout << "Sets ganados: ";
-    cin >> game.setsWon;
+    fetch_input(game.setsWon);
+    clearstdin();
 
     cout << "Sets perdidos: ";
-    cin >> game.setsLost;
+    fetch_input(game.setsLost);
+    clearstdin(); 
 
     cout << "Aces: ";
-    cin >> game.ace;
+    fetch_input(game.ace);
+    clearstdin();
 
     cout << "Errores: ";
-    cin >> game.errors;
-
+    fetch_input(game.errors);
+    clearstdin(); 
+    
     cout << "Recepciones exitosas: ";
-    cin >> game.sucessfulRecep;
+    fetch_input(game.sucessfulRecep);
+    clearstdin();
 
     cout << "Ataques exitosos: ";
-    cin >> game.succesfulAtacks;
+    fetch_input(game.succesfulAtacks);
+    clearstdin();
 
     cout << "Bloqueos: ";
-    cin >> game.blocks;
+    fetch_input(game.blocks);
+    clearstdin();
 
     cout << "Faltas: ";
-    cin >> game.faults;
+    fetch_input(game.faults);
+    clearstdin();
+
     cout << endl;
     addGame(&game);
     cout << ANSI_COLOR_GREEN "Estadisticas guardadas correctamente..." << ANSI_COLOR_RESET << endl;
@@ -335,6 +347,12 @@ void findGame()
 
 void showData(StatsGames &game)
 {
+    //Validar si hay estadisticas
+    if(pos == 0)
+    {
+        cout << "No hay estadisticas..." << endl;
+        return;
+    }  
     if (game.id == 0)
     {
         cout << "No hay datos" << endl;
@@ -459,44 +477,73 @@ void editGame()
     }
     clearstdin();
     system("clear || cls");
+
     cout << "Ingrese el rival: ";
     cin >> game.rival;
+    clearstdin();
     cout << "Ingrese la fecha en la que se jugo el partido\n";
     cout << "Dia: ";
-    cin >> game.day;
+    fetch_input_day(game.day);
+    if (game.day > 31 || game.day < 1)
+    {
+        cout << "Ingrese un dia valido" << endl;
+        return getStats();
+    }
     cout << "Mes: ";
-    cin >> game.month;
-    cout << "Año: ";
-    cin >> game.year;
+    fetch_input_day(game.month);
+    if (game.month > 12 || game.month < 1)
+    {
+        cout << "Ingrese un mes valido" << endl;
+        return getStats();
+    }
+
+    cout << "Año(xxxx): ";
+    fetch_input_year(game.year);
+    if (game.year > CURRENT_YEAR || game.year < 2010)
+    {
+        cout << "Ingrese un año valido, mayor a 2010..." << endl;
+        return getStats();
+    }
+
     cout << "Puntos anotados: ";
-    cin >> game.pts;
+    fetch_input(game.pts);
     clearstdin();
+
     cout << "Puntos en contra: ";
-    cin >> game.ptsAgainst;
+    fetch_input(game.ptsAgainst);
+    clearstdin();
 
     cout << "Sets ganados: ";
-    cin >> game.setsWon;
+    fetch_input(game.setsWon);
+    clearstdin();
 
     cout << "Sets perdidos: ";
-    cin >> game.setsLost;
+    fetch_input(game.setsLost);
+    clearstdin(); 
 
     cout << "Aces: ";
-    cin >> game.ace;
+    fetch_input(game.ace);
     clearstdin();
-    cout << "Errores: ";
-    cin >> game.errors;
 
+    cout << "Errores: ";
+    fetch_input(game.errors);
+    clearstdin(); 
+    
     cout << "Recepciones exitosas: ";
-    cin >> game.sucessfulRecep;
+    fetch_input(game.sucessfulRecep);
+    clearstdin();
 
     cout << "Ataques exitosos: ";
-    cin >> game.succesfulAtacks;
+    fetch_input(game.succesfulAtacks);
+    clearstdin();
 
     cout << "Bloqueos: ";
-    cin >> game.blocks;
+    fetch_input(game.blocks);
+    clearstdin();
 
     cout << "Faltas: ";
-    cin >> game.faults;
+    fetch_input(game.faults);
+    clearstdin();
     cout << endl;
     uppdateGame(&game, id);
     cout << ANSI_COLOR_GREEN "Estadisticas actualizadas..." << ANSI_COLOR_RESET << endl;
@@ -883,6 +930,8 @@ void validateUser(USERS *users, int &positionUser) {
     }
 
     cout << "Usuario o contraseña incorrectos" << endl;
+    cout << "Intentelo de nuevo" << endl;
+    Sleep(3000);
 }
 
 void usersMenu() {
@@ -897,11 +946,12 @@ void usersMenu() {
         cout << "2. Nuevo Usuario" << endl;
         cout << "3. Salir"<< endl;
         cout << "Ingrese una opcion: ";
-        cin >> option;
+        fetch_input(option);
 
         switch (option) {
             case 1:
                 if(positionUser == 0){
+                    system("cls");
                     cout << "No hay usuarios registrados" << endl;
                     getUser(users, positionUser);
                     Sleep(2000);
@@ -912,12 +962,12 @@ void usersMenu() {
                 }
                 break;
             case 2:
-                getUser(users, positionUser);
+                    getUser(users, positionUser);
 
-                Sleep(2000);
+                    Sleep(2000);
                 break;
             case 3: 
-                cout << "Adios, mi tierno <3"; 
+                cout << "Adios, mi tierno "ANSI_COLOR_RED "<3" ANSI_COLOR_RESET << endl; 
                 break;
            
             default:
